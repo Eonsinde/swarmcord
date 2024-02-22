@@ -72,19 +72,17 @@ const InitialModal = () => {
                         className="space-y-8"
                         onSubmit={form.handleSubmit(onSubmit)}
                     >
-                        <div className="flex justify-center items-center">
-                            <FormField
-                                name="imageUrl"
-                                control={form.control}
-                                render={({ field }) => (
-                                    <FileUpload
-                                        value={field.value}
-                                        endpoint="serverImage"
-                                        onChange={field.onChange}
-                                    />
-                                )}
-                            />
-                        </div>
+                        <FormField
+                            name="imageUrl"
+                            control={form.control}
+                            render={({ field }) => (
+                                <FileUpload
+                                    value={field.value}
+                                    endpoint="serverImage"
+                                    onChange={field.onChange}
+                                />
+                            )}
+                        />
                         <FormField
                             name="name"
                             control={form.control}
