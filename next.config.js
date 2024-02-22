@@ -4,7 +4,8 @@ const nextConfig = {
         domains: [
             "uploadthing.com",
             "utfs.io",
-            "amazonaws.com"
+            "uploadthing-prod-sea1.s3.us-west-2.amazonaws.com",
+            "files.edgestore.dev"
         ]
     }
 }

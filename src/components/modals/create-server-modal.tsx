@@ -1,7 +1,8 @@
 "use client"
-import { useEffect, useState } from "react"
+import { useMemo, useState } from "react"
 import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
+import { useModal } from "@/hooks/use-modal-store"
 import axios from "axios"
 import * as z from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -34,10 +35,13 @@ const formSchema = z.object({
     }),
 });
 
-const InitialModal = () => {
+const CreateServerModal = () => {
     const router = useRouter();
+    const { type, isOpen, onClose } = useModal();
 
-    const [isMounted, setIsMounted] = useState<boolean>(false);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+
+    const isModalOpen = useMemo(() => isOpen && type === "createServer", [isOpen, type]);
 
     const form = useForm({
         resolver: zodResolver(formSchema),
@@ -47,29 +51,32 @@ const InitialModal = () => {
         }
     });
 
-    useEffect(() => {
-        setIsMounted(true);
-    }, []);
+    const handleClose = () => {
+        form.reset();
+        onClose();
+    }
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
+        setIsLoading(true);
+
         try {
             await axios.post("/api/servers", values);
 
             form.reset();
             router.refresh();
-            window.location.reload();
+            onClose();
         } catch {
-
+            // show error message
         } finally {
-
+            setIsLoading(false);
         }
     }
 
-    if (!isMounted)
-        return null;
-
     return (
-        <Dialog open>
+        <Dialog
+            open={isModalOpen}
+            onOpenChange={handleClose}
+        >
             <DialogContent
                 className="sm:max-w-[425px]"
                 showCloseBtn={false}
@@ -96,8 +103,9 @@ const InitialModal = () => {
                                             value={field.value}
                                             endpoint="serverImage"
                                             onChange={field.onChange}
+                                            disabled={isLoading}
                                             dropzoneOptions={{
-                                                maxSize: (1024 * 1024) * 3
+                                                maxSize: (1024 * 1024) * 4
                                             }}
                                         />
                                     </FormControl>
@@ -116,9 +124,9 @@ const InitialModal = () => {
                                     <FormControl>
                                         <Input
                                             className=""
-                                            disabled={form.formState.isLoading}
-                                            placeholder="Enter server name"
                                             {...field}
+                                            disabled={isLoading}
+                                            placeholder="Enter server name"
                                         />
                                     </FormControl>
                                     <FormMessage />
@@ -129,7 +137,7 @@ const InitialModal = () => {
                             <Button
                                 variant="primary"
                                 type="submit"
-                                disabled={form.formState.isLoading}
+                                disabled={isLoading}
                             >
                                 Create Server
                             </Button>
@@ -141,4 +149,4 @@ const InitialModal = () => {
     )
 }
 
-export default InitialModal
+export default CreateServerModal

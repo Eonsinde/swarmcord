@@ -1,11 +1,10 @@
 import type { Metadata } from "next"
 import { Open_Sans } from "next/font/google"
 import { ClerkProvider } from "@clerk/nextjs"
-import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin"
-import { extractRouterConfig } from "uploadthing/server"
-import { ourFileRouter } from "./api/uploadthing/core"
+import { EdgeStoreProvider } from "@/lib/edgestore"
 import "./globals.css"
 import ThemeProvider from "@/providers/ThemeProvider"
+import { ModalProvider } from "@/providers/ModalProvider"
 
 const font = Open_Sans({ subsets: ["latin"] });
 
@@ -24,23 +23,17 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en">
         <body className={font.className} suppressHydrationWarning>
-          <NextSSRPlugin
-            /**
-             * The `extractRouterConfig` will extract **only** the route configs
-             * from the router to prevent additional information from being
-             * leaked to the client. The data passed to the client is the same
-             * as if you were to fetch `/api/uploadthing` directly.
-             */
-            routerConfig={extractRouterConfig(ourFileRouter)}
-          />
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="dark"
-            enableSystem
-            storageKey="swarmcord"
-          >
-            {children}
-          </ThemeProvider>
+          <EdgeStoreProvider>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="dark"
+              enableSystem
+              storageKey="swarmcord"
+            >
+              <ModalProvider />
+              {children}
+            </ThemeProvider>
+          </EdgeStoreProvider>
         </body>
       </html>
     </ClerkProvider>
