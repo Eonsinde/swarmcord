@@ -76,7 +76,10 @@ const ServerHeader = ({ server, role }: Props) => {
                 )}
                 <DropdownMenuSeparator className="my-2 mx-2 bg-[#484d56]" />
                 {!isAdmin && (
-                    <DropdownMenuItem className="hover:bg-rose-500 focus:bg-rose-500 text-rose-500 hover:text-white focus:text-white py-2 px-3 cursor-pointer">
+                    <DropdownMenuItem
+                        className="hover:bg-rose-500 focus:bg-rose-500 text-rose-500 hover:text-white focus:text-white py-2 px-3 cursor-pointer"
+                        onClick={() => onOpen("leaveServer", { server })}
+                    >
                         Leave Server
                         <LogOut className="h-4 w-4 ml-auto" />
                     </DropdownMenuItem>
