@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 
-const useCurrentUrl = () => {
+const useOrigin = () => {
     const [mounted, setMounted] = useState<boolean>(false);
 
     useEffect(() => {
@@ -15,4 +15,4 @@ const useCurrentUrl = () => {
     return origin;
 }
  
-export default useCurrentUrl;
+export default useOrigin;

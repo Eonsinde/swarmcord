@@ -1,7 +1,7 @@
 "use client"
 import { useCallback, useMemo, useState } from "react"
 import { useModal } from "@/hooks/use-modal-store"
-import useCurrentUrl from "@/hooks/use-current-url"
+import useOrigin from "@/hooks/use-origin"
 import axios from "axios"
 import { Check, Copy, RefreshCcw } from "lucide-react"
 import {
@@ -15,7 +15,7 @@ import { Button } from "@/components/ui/button"
 
 const InviteModal = () => {
     const { isOpen, type, data, onOpen, onClose } = useModal();
-    const currentUrl = useCurrentUrl();
+    const currentUrl = useOrigin();
 
     const [copied, setCopied] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(false);

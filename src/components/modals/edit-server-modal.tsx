@@ -81,7 +81,7 @@ const EditServerModal = () => {
         >
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle>Edit server: <span className="capitalize">{data?.server?.name}</span></DialogTitle>
+                    <DialogTitle>Edit server</DialogTitle>
                     <DialogDescription>
                         Make changes to your server. You can also add a description and cover image
                     </DialogDescription>
