@@ -39,19 +39,28 @@ const ServerHeader = ({ server, role }: Props) => {
                     <UserPlus className="h-4 w-4 ml-auto" />
                 </DropdownMenuItem>
                 {isModerator && (
-                    <DropdownMenuItem className="hover:bg-indigo-600 focus:bg-indigo-600 hover:text-white focus:text-white py-2 px-3 cursor-pointer">
+                    <DropdownMenuItem
+                        className="hover:bg-indigo-600 focus:bg-indigo-600 hover:text-white focus:text-white py-2 px-3 cursor-pointer"
+                        onClick={() => true}
+                    >
                         Create Channel
                         <PlusCircle className="h-4 w-4 ml-auto" />
                     </DropdownMenuItem>
                 )}
                 {isAdmin && (
-                    <DropdownMenuItem className="hover:bg-indigo-600 focus:bg-indigo-600 hover:text-white focus:text-white py-2 px-3 cursor-pointer">
+                    <DropdownMenuItem
+                        className="hover:bg-indigo-600 focus:bg-indigo-600 hover:text-white focus:text-white py-2 px-3 cursor-pointer"
+                        onClick={() => true}
+                    >
                         Manage Members
                         <Users className="h-4 w-4 ml-auto" />
                     </DropdownMenuItem>
                 )}
                 {isAdmin && (
-                    <DropdownMenuItem className="hover:bg-indigo-600 focus:bg-indigo-600 hover:text-white focus:text-white py-2 px-3 cursor-pointer">
+                    <DropdownMenuItem
+                        className="hover:bg-indigo-600 focus:bg-indigo-600 hover:text-white focus:text-white py-2 px-3 cursor-pointer"
+                        onClick={() => onOpen("editServer", { server })}
+                    >
                         Server Settings
                         <Settings className="h-4 w-4 ml-auto" />
                     </DropdownMenuItem>
