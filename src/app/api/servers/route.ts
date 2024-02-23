@@ -34,7 +34,7 @@ export async function POST(req: Request) {
 
         return NextResponse.json(server);
     } catch (error) {
-        console.log("servers error:", error);
+        console.log("[CREATE_SERVER]", error);
         return new NextResponse("Server Error", { status: 500 });
     }
 }

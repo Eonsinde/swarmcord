@@ -81,7 +81,7 @@ const EditServerModal = () => {
         >
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle>Edit Server</DialogTitle>
+                    <DialogTitle>Edit server</DialogTitle>
                     <DialogDescription>
                         Make changes to your server. You can also add a description and cover image
                     </DialogDescription>

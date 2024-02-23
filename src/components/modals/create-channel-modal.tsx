@@ -1,11 +1,12 @@
 "use client"
 import { useMemo, useState } from "react"
-import { useRouter } from "next/navigation"
+import { useParams, useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
 import { useModal } from "@/hooks/use-modal-store"
 import axios from "axios"
 import * as z from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
+import qs from "query-string"
 import { ChannelType } from "@prisma/client"
 import {
     Dialog,
@@ -26,9 +27,7 @@ import {
 import {
     Select,
     SelectContent,
-    SelectGroup,
     SelectItem,
-    SelectLabel,
     SelectTrigger,
     SelectValue,
   } from "@/components/ui/select"
@@ -49,6 +48,7 @@ const formSchema = z.object({
 
 const CreateChannelModal = () => {
     const router = useRouter();
+    const params = useParams<{ serverId: string }>();
     const { type, isOpen, onClose } = useModal();
 
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -72,7 +72,14 @@ const CreateChannelModal = () => {
         setIsLoading(true);
 
         try {
-            await axios.post("/api/channels", values);
+            const url = qs.stringifyUrl({
+                url: `/api/channels`,
+                query: {
+                    serverId: params?.serverId
+                }
+            });
+
+            await axios.post(url, values);
 
             form.reset();
             router.refresh();
@@ -91,7 +98,7 @@ const CreateChannelModal = () => {
         >
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle>Create Channel</DialogTitle>
+                    <DialogTitle>Create channel</DialogTitle>
                     <DialogDescription>
                         Channels allow users to share Text, Audio & Video contents
                     </DialogDescription>
@@ -134,7 +141,7 @@ const CreateChannelModal = () => {
                                         defaultValue={field.value}
                                     >
                                         <FormControl>
-                                            <SelectTrigger>
+                                            <SelectTrigger className="capitalize">
                                                 <SelectValue placeholder="Select channel type" />
                                             </SelectTrigger>
                                         </FormControl>
@@ -150,6 +157,7 @@ const CreateChannelModal = () => {
                                             ))}
                                         </SelectContent>
                                     </Select>
+                                    <FormMessage />
                                 </FormItem>
                             )}
                         />
