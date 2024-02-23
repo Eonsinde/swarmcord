@@ -6,12 +6,13 @@ html,
 body,
 :root {
   height: 100%;
+  /* background-color: #ebebeb; */
 }
 
 @layer base {
   :root {
     --background: 0 0% 100%;
-    --foreground: 20 14.3% 4.1%;
+    --foreground: 230, 8%, 15%;
 
     --card: 0 0% 100%;
     --card-foreground: 20 14.3% 4.1%;
@@ -22,20 +23,22 @@ body,
     --primary: 24 9.8% 10%;
     --primary-foreground: 60 9.1% 97.8%;
  
-    --secondary: 60 4.8% 95.9%;
+    --secondary: 213, 13%, 86%;
     --secondary-foreground: 24 9.8% 10%;
  
     --muted: 60 4.8% 95.9%;
-    --muted-foreground: 25 5.3% 44.7%;
+    --muted-foreground: 216, 7%, 27%;
  
-    --accent: 60 4.8% 95.9%;
+    --accent: 240, 6%, 90%;
+    /* --accent: 60 4.8% 95.9%; */
     --accent-foreground: 24 9.8% 10%;
  
-    --destructive: 0 84.2% 60.2%;
+    --destructive: 350, 89%, 60%;
     --destructive-foreground: 60 9.1% 97.8%;
 
-    --border: 20 5.9% 90%;
-    --input: 20 5.9% 90%;
+    --border: 0, 0%, 92%;
+    /* --border: 20 5.9% 90%; */
+    --input: 215, 10%, 43%;
     --ring: 20 14.3% 4.1%;
  
     --radius: 0.5rem;
@@ -48,7 +51,7 @@ body,
     --card: 20 14.3% 4.1%;
     --card-foreground: 60 9.1% 97.8%;
 
-    --popover: 230, 8%, 15%;
+    --popover: 220, 8%, 7%;
     /* --popover: 20 14.3% 4.1%; */
     --popover-foreground: 60 9.1% 97.8%;
  
@@ -62,7 +65,9 @@ body,
     --muted: 12 6.5% 15.1%;
     --muted-foreground: 214, 10%, 69%;
  
-    --accent: 12 6.5% 15.1%;
+    --accent: 230, 8%, 15%;
+    /* --accent: 228, 8%, 12%; */
+    /* --accent: 12 6.5% 15.1%; */
     --accent-foreground: 60 9.1% 97.8%;
  
     --destructive: 350, 89%, 60%;

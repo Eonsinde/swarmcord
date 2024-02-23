@@ -29,7 +29,7 @@ const NavigationSidebar = async (props: Props) => {
     return (
         <aside className="h-full w-full flex flex-col items-center space-y-4 py-3 bg-secondary">
             <NavigationAction />
-            <Separator className="h-[2px] w-10 mx-auto rounded-md"/>
+            <Separator className="bg-[#484d56] h-[2px] w-10 mx-auto rounded-md"/>
             <ScrollArea className="flex-1 w-full">
                 {servers.map((server) => (
                     <div

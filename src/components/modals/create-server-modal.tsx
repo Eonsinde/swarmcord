@@ -77,10 +77,7 @@ const CreateServerModal = () => {
             open={isModalOpen}
             onOpenChange={handleClose}
         >
-            <DialogContent
-                className="sm:max-w-[425px]"
-                showCloseBtn={false}
-            >
+            <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
                     <DialogTitle>Customize your server</DialogTitle>
                     <DialogDescription>
@@ -123,7 +120,6 @@ const CreateServerModal = () => {
                                     </FormLabel>
                                     <FormControl>
                                         <Input
-                                            className=""
                                             {...field}
                                             disabled={isLoading}
                                             placeholder="Enter server name"

@@ -38,6 +38,7 @@ const InitialModal = () => {
     const router = useRouter();
 
     const [isMounted, setIsMounted] = useState<boolean>(false);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const form = useForm({
         resolver: zodResolver(formSchema),
@@ -52,6 +53,8 @@ const InitialModal = () => {
     }, []);
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
+        setIsLoading(true);
+
         try {
             await axios.post("/api/servers", values);
 
@@ -59,9 +62,9 @@ const InitialModal = () => {
             router.refresh();
             window.location.reload();
         } catch {
-
+            // show error message
         } finally {
-
+            setIsLoading(false);
         }
     }
 
@@ -96,8 +99,9 @@ const InitialModal = () => {
                                             value={field.value}
                                             endpoint="serverImage"
                                             onChange={field.onChange}
+                                            disabled={isLoading}
                                             dropzoneOptions={{
-                                                maxSize: (1024 * 1024) * 3
+                                                maxSize: (1024 * 1024) * 4
                                             }}
                                         />
                                     </FormControl>
@@ -115,10 +119,9 @@ const InitialModal = () => {
                                     </FormLabel>
                                     <FormControl>
                                         <Input
-                                            className=""
-                                            disabled={form.formState.isLoading}
-                                            placeholder="Enter server name"
                                             {...field}
+                                            disabled={isLoading}
+                                            placeholder="Enter server name"
                                         />
                                     </FormControl>
                                     <FormMessage />
@@ -129,7 +132,7 @@ const InitialModal = () => {
                             <Button
                                 variant="primary"
                                 type="submit"
-                                disabled={form.formState.isLoading}
+                                disabled={isLoading}
                             >
                                 Create Server
                             </Button>
