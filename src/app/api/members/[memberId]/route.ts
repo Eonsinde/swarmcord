@@ -1,3 +1,4 @@
+// contain logic to change members role in server and kick them from server
 import { NextResponse } from "next/server"
 import { db } from "@/lib/db"
 import { currentProfile } from "@/lib/current-profile"

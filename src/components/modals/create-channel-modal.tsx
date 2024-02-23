@@ -1,11 +1,12 @@
 "use client"
-import { useEffect, useMemo, useState } from "react"
+import { useMemo, useState } from "react"
 import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
 import { useModal } from "@/hooks/use-modal-store"
 import axios from "axios"
 import * as z from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { ChannelType } from "@prisma/client"
 import {
     Dialog,
     DialogContent,
@@ -22,47 +23,56 @@ import {
     FormLabel,
     FormMessage
 } from "@/components/ui/form"
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectLabel,
+    SelectTrigger,
+    SelectValue,
+  } from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import FileUpload from "@/components/file-upload"
 
 const formSchema = z.object({
-    name: z.string().min(2, {
-        message: "Server name is required"
-    }),
-    imageUrl: z.string().min(2, {
-        message: "Server image is required"
-    })
+    name: z.string().min(1, {
+        message: "Channel name is required"
+    }).refine(
+        name => name !== "general",
+        {
+            message: "Channel name cannot be 'general'"
+        }
+    ),
+    type: z.nativeEnum(ChannelType)
 });
 
-const EditServerModal = () => {
+const CreateChannelModal = () => {
     const router = useRouter();
-    const { type, data, isOpen, onClose } = useModal();
+    const { type, isOpen, onClose } = useModal();
 
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
-    const isModalOpen = useMemo(() => isOpen && type === "editServer", [isOpen, type]);
+    const isModalOpen = useMemo(() => isOpen && type === "createChannel", [isOpen, type]);
 
     const form = useForm({
         resolver: zodResolver(formSchema),
         defaultValues: {
             name: "",
-            imageUrl: ""
+            type: ChannelType.TEXT
         }
     });
 
-    useEffect(() => {
-        if (data?.server) {
-            form.setValue("name", data?.server?.name);
-            form.setValue("imageUrl", data?.server?.imageUrl);
-        }
-    }, [data, form]);
+    const handleClose = () => {
+        form.reset();
+        onClose();
+    }
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         setIsLoading(true);
 
         try {
-            await axios.patch(`/api/servers/${data?.server?.id}`, values);
+            await axios.post("/api/channels", values);
 
             form.reset();
             router.refresh();
@@ -77,13 +87,13 @@ const EditServerModal = () => {
     return (
         <Dialog
             open={isModalOpen}
-            onOpenChange={onClose}
+            onOpenChange={handleClose}
         >
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle>Edit Server</DialogTitle>
+                    <DialogTitle>Create Channel</DialogTitle>
                     <DialogDescription>
-                        Make changes to your server. You can also add a description and cover image
+                        Channels allow users to share Text, Audio & Video contents
                     </DialogDescription>
                 </DialogHeader>
                 <Form {...form}>
@@ -92,19 +102,18 @@ const EditServerModal = () => {
                         onSubmit={form.handleSubmit(onSubmit)}
                     >
                         <FormField
-                            name="imageUrl"
+                            name="name"
                             control={form.control}
                             render={({ field }) => (
                                 <FormItem>
+                                    <FormLabel className="text-xs font-bold text-foreground">
+                                        Channel Name
+                                    </FormLabel>
                                     <FormControl>
-                                        <FileUpload
-                                            value={field.value}
-                                            endpoint="serverImage"
-                                            onChange={field.onChange}
+                                        <Input
+                                            {...field}
                                             disabled={isLoading}
-                                            dropzoneOptions={{
-                                                maxSize: (1024 * 1024) * 4
-                                            }}
+                                            placeholder="Enter channel name"
                                         />
                                     </FormControl>
                                     <FormMessage />
@@ -112,21 +121,35 @@ const EditServerModal = () => {
                             )}
                         />
                         <FormField
-                            name="name"
+                            name="type"
                             control={form.control}
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel className="text-xs font-bold text-foreground">
-                                        Server Name
+                                        Channel Type
                                     </FormLabel>
-                                    <FormControl>
-                                        <Input
-                                            {...field}
-                                            disabled={isLoading}
-                                            placeholder="Enter server name"
-                                        />
-                                    </FormControl>
-                                    <FormMessage />
+                                    <Select
+                                        disabled={isLoading}
+                                        onValueChange={field.onChange}
+                                        defaultValue={field.value}
+                                    >
+                                        <FormControl>
+                                            <SelectTrigger>
+                                                <SelectValue placeholder="Select channel type" />
+                                            </SelectTrigger>
+                                        </FormControl>
+                                        <SelectContent>
+                                            {Object.values(ChannelType).map((type) => (
+                                                <SelectItem
+                                                    key={type}
+                                                    className="capitalize"
+                                                    value={type}
+                                                >
+                                                    {type.toLowerCase()}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
                                 </FormItem>
                             )}
                         />
@@ -136,7 +159,7 @@ const EditServerModal = () => {
                                 type="submit"
                                 disabled={isLoading}
                             >
-                                Save
+                                Create
                             </Button>
                         </DialogFooter>
                     </form>
@@ -146,4 +169,4 @@ const EditServerModal = () => {
     )
 }
 
-export default EditServerModal
+export default CreateChannelModal
