@@ -44,6 +44,29 @@ const MembersModal = () => {
 
     const isModalOpen = useMemo(() => isOpen && type === "manageMembers", [isOpen, type, data]);
 
+    const handleKick = async (memberId: string) => {
+        setLoadingId(memberId);
+
+        try {
+            const url = qs.stringifyUrl({
+                url: `/api/members/${memberId}`,
+                query: {
+                    serverId: server?.id
+                }
+            });
+
+            const response = await axios.delete(url);
+
+            router.refresh();
+            // update the modal
+            onOpen("manageMembers", { server: response.data })
+        } catch (error) {
+            console.log("members-modal:", error);
+        } finally {
+            setLoadingId("");
+        }
+    }
+
     const handleRoleChange = async (memberId: string, role: MemberRole) => {
         setLoadingId(memberId);
 
@@ -131,7 +154,7 @@ const MembersModal = () => {
                                             </DropdownMenuPortal>
                                         </DropdownMenuSub>
                                         <DropdownMenuSeparator />
-                                        <DropdownMenuItem>
+                                        <DropdownMenuItem onClick={() => handleKick(member.id)}>
                                             <Gavel className="h-4 w-4 mr-2" />
                                             Kick
                                         </DropdownMenuItem>

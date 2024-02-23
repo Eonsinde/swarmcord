@@ -47,6 +47,15 @@ const ServerHeader = ({ server, role }: Props) => {
                         <PlusCircle className="h-4 w-4 ml-auto" />
                     </DropdownMenuItem>
                 )}
+                {isModerator && (
+                    <DropdownMenuItem
+                        className="hover:bg-indigo-600 focus:bg-indigo-600 hover:text-white focus:text-white py-2 px-3 cursor-pointer"
+                        onClick={() => onOpen("manageChannels", { server })}
+                    >
+                        Manage Channels
+                        <Users className="h-4 w-4 ml-auto" />
+                    </DropdownMenuItem>
+                )}
                 {isAdmin && (
                     <DropdownMenuItem
                         className="hover:bg-indigo-600 focus:bg-indigo-600 hover:text-white focus:text-white py-2 px-3 cursor-pointer"
