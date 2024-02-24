@@ -25,11 +25,11 @@ const DeleteServerModal = () => {
         setIsLoading(true);
 
         try {
-            await axios.patch(`/api/servers/${data?.server?.id}`, {});
+            await axios.delete(`/api/servers/${data?.server?.id}`);
 
+            onClose();
             router.refresh();
             router.push("/");
-            onClose();
         } catch (error) {
             
         } finally {
@@ -46,7 +46,7 @@ const DeleteServerModal = () => {
                 <DialogHeader>
                     <DialogTitle>Delete Server</DialogTitle>
                     <DialogDescription>
-                        Are you sure want to remove this server <span className="font-semibold capitalize text-indigo-500">{data?.server?.name}?</span> Action cannot be reversed
+                        Are you sure want to remove this server. <span className="font-semibold capitalize text-indigo-500">{data?.server?.name}?</span> will permanently be deleted
                     </DialogDescription>
                 </DialogHeader>
                 <DialogFooter>

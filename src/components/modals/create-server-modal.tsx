@@ -60,10 +60,10 @@ const CreateServerModal = () => {
         setIsLoading(true);
 
         try {
-            await axios.post("/api/servers", values);
+            const result = await axios.post("/api/servers", values);
 
             form.reset();
-            router.refresh();
+            router.push(`/servers/${result.data.id}`);
             onClose();
         } catch {
             // show error message
