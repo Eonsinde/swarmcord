@@ -1,4 +1,4 @@
-// contain logic to change members role in server and kick them from server
+// contain logic to create channel for as given server
 import { NextResponse } from "next/server"
 import { db } from "@/lib/db"
 import { currentProfile } from "@/lib/current-profile"

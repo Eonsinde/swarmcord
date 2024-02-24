@@ -13,19 +13,19 @@ import {
 } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 
-const LeaveServerModal = () => {
+const DeleteServerModal = () => {
     const router = useRouter();
     const { isOpen, type, data, onClose } = useModal();
 
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
-    const isModalOpen = useMemo(() => isOpen && type === "leaveServer", [isOpen, type, data]);
+    const isModalOpen = useMemo(() => isOpen && type === "deleteServer", [isOpen, type, data]);
 
     const handleLeave = async () => {
         setIsLoading(true);
 
         try {
-            await axios.patch(`/api/servers/${data?.server?.id}/leave`, {});
+            await axios.patch(`/api/servers/${data?.server?.id}`, {});
 
             router.refresh();
             router.push("/");
@@ -44,9 +44,9 @@ const LeaveServerModal = () => {
         >
             <DialogContent className="max-w-[90%] sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle>Leave Server</DialogTitle>
+                    <DialogTitle>Delete Server</DialogTitle>
                     <DialogDescription>
-                        Are you sure you want to leave server <span className="font-semibold capitalize text-indigo-500">{data?.server?.name}?</span>
+                        Are you sure want to remove this server <span className="font-semibold capitalize text-indigo-500">{data?.server?.name}?</span> Action cannot be reversed
                     </DialogDescription>
                 </DialogHeader>
                 <DialogFooter>
@@ -63,7 +63,7 @@ const LeaveServerModal = () => {
                             onClick={handleLeave}
                             disabled={isLoading}
                         >
-                            Continue
+                            Confirm
                         </Button>
                     </div>
                 </DialogFooter>
@@ -72,4 +72,4 @@ const LeaveServerModal = () => {
     );
 }
  
-export default LeaveServerModal
+export default DeleteServerModal
