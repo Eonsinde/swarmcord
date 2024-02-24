@@ -62,7 +62,8 @@ body,
     --secondary: 230, 8%, 15%;
     --secondary-foreground: 60 9.1% 97.8%;
  
-    --muted: 12 6.5% 15.1%;
+    --muted: 219, 9%, 31%;
+    /* --muted: 12 6.5% 15.1%; */
     --muted-foreground: 214, 10%, 69%;
  
     --accent: 230, 8%, 15%;
