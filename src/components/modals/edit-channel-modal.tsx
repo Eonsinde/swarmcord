@@ -46,20 +46,20 @@ const formSchema = z.object({
     type: z.nativeEnum(ChannelType)
 });
 
-const CreateChannelModal = () => {
+const EditChannelModal = () => {
     const router = useRouter();
     const params = useParams<{ serverId: string }>();
     const { type, data, isOpen, onClose } = useModal();
 
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
-    const isModalOpen = useMemo(() => isOpen && type === "createChannel", [isOpen, type]);
+    const isModalOpen = useMemo(() => isOpen && type === "editChannel", [isOpen, type]);
 
     const form = useForm({
         resolver: zodResolver(formSchema),
         defaultValues: {
             name: "",
-            type: ""
+            type: data?.channel?.type || ChannelType.TEXT
         }
     });
 
@@ -102,9 +102,9 @@ const CreateChannelModal = () => {
         >
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle>Create channel</DialogTitle>
+                    <DialogTitle>Edit channel</DialogTitle>
                     <DialogDescription>
-                        Channels allow users to share Text, Audio & Video contents
+                        Makes changes to <b>{data?.channel?.name}</b>
                     </DialogDescription>
                 </DialogHeader>
                 <Form {...form}>
@@ -181,4 +181,4 @@ const CreateChannelModal = () => {
     )
 }
 
-export default CreateChannelModal
+export default EditChannelModal

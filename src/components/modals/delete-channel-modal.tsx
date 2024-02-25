@@ -13,13 +13,13 @@ import {
 } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 
-const DeleteServerModal = () => {
+const DeleteChannelModal = () => {
     const router = useRouter();
     const { isOpen, type, data, onClose } = useModal();
 
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
-    const isModalOpen = useMemo(() => isOpen && type === "deleteServer", [isOpen, type, data]);
+    const isModalOpen = useMemo(() => isOpen && type === "deleteChannel", [isOpen, type, data]);
 
     const handleLeave = async () => {
         setIsLoading(true);
@@ -44,9 +44,9 @@ const DeleteServerModal = () => {
         >
             <DialogContent className="max-w-[90%] sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle>Delete Server</DialogTitle>
+                    <DialogTitle>Delete channel</DialogTitle>
                     <DialogDescription>
-                        Are you sure want to remove this server? <span className="font-semibold capitalize text-indigo-500">{data?.server?.name}</span> will permanently be deleted
+                        Are you sure want to remove this channel? <span className="font-semibold capitalize text-indigo-500">{data?.channel?.name}</span> will permanently be deleted
                     </DialogDescription>
                 </DialogHeader>
                 <DialogFooter>
@@ -72,4 +72,4 @@ const DeleteServerModal = () => {
     );
 }
  
-export default DeleteServerModal
+export default DeleteChannelModal

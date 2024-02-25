@@ -1,5 +1,6 @@
 "use client"
 import { useEffect, useState } from "react"
+import { useParams, useRouter } from "next/navigation"
 import { Search } from "lucide-react"
 import {
     CommandDialog,
@@ -8,8 +9,6 @@ import {
     CommandInput,
     CommandItem,
     CommandList,
-    CommandSeparator,
-    CommandShortcut,
   } from "@/components/ui/command"
 
 type Props = {
@@ -26,6 +25,8 @@ type Props = {
 
 const ServerSearch = ({ data }: Props) => {
     const [open, setOpen] = useState<boolean>(false);
+    const router = useRouter();
+    const params = useParams<{ serverId: string }>();
 
     useEffect(() => {
         const down = (e: KeyboardEvent) => {
@@ -38,7 +39,17 @@ const ServerSearch = ({ data }: Props) => {
         document.addEventListener("keydown", down);
 
         return () => document.removeEventListener("keydown", down);
-      }, [])
+    }, []);
+
+    const handleClick = ({ id, type }: { id: string, type: "channel" | "member" }) => {
+        setOpen(false);
+
+        if (type === "member")
+            return router.push(`/servers/${params?.serverId}/conversations/${id}`);
+
+        if (type === "channel")
+            return router.push(`/servers/${params?.serverId}/channels/${id}`);
+    }
 
     return (
         <>
@@ -68,7 +79,10 @@ const ServerSearch = ({ data }: Props) => {
                                 heading={label}
                             >
                                 {data?.map(({ id, icon, name }) => (
-                                    <CommandItem>
+                                    <CommandItem
+                                        key={id}
+                                        onSelect={() => handleClick({ id, type })}
+                                    >
                                         {icon}
                                         <span>{name}</span>
                                     </CommandItem>
@@ -76,8 +90,6 @@ const ServerSearch = ({ data }: Props) => {
                             </CommandGroup>
                         )
                     })}
-                    
-                    <CommandSeparator />
                 </CommandList>
             </CommandDialog>
         </>
