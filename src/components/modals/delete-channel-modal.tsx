@@ -3,6 +3,7 @@ import { useMemo, useState } from "react"
 import { useRouter } from "next/navigation"
 import { useModal } from "@/hooks/use-modal-store"
 import axios from "axios"
+import qs from "query-string"
 import {
     Dialog,
     DialogContent,
@@ -25,11 +26,18 @@ const DeleteChannelModal = () => {
         setIsLoading(true);
 
         try {
-            await axios.delete(`/api/servers/${data?.server?.id}`);
+            const url = qs.stringifyUrl({
+                url: `/api/channels/${data?.channel?.id}`,
+                query: {
+                    serverId: data?.server?.id
+                }
+            });
+
+            await axios.delete(url);
 
             onClose();
             router.refresh();
-            router.push("/");
+            router.push(`/servers/${data?.server?.id}`);
         } catch (error) {
             
         } finally {

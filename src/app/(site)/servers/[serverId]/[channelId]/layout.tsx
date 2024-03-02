@@ -9,7 +9,7 @@ const ServerIdLayout = async ({
     params
 }: {
     children: React.ReactNode,
-    params: { serverId: string }
+    params: { serverId: string, channelId: string }
 }) => {
     const profile = await currentProfile();
 

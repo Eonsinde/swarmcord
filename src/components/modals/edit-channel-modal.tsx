@@ -48,7 +48,6 @@ const formSchema = z.object({
 
 const EditChannelModal = () => {
     const router = useRouter();
-    const params = useParams<{ serverId: string }>();
     const { type, data, isOpen, onClose } = useModal();
 
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -64,6 +63,7 @@ const EditChannelModal = () => {
     });
 
     useEffect(() => {
+        form.setValue("name", data?.channel?.name || "");
         form.setValue("type", data?.channel?.type || ChannelType.TEXT);
     }, [data]);
 
@@ -77,15 +77,14 @@ const EditChannelModal = () => {
 
         try {
             const url = qs.stringifyUrl({
-                url: `/api/channels`,
+                url: `/api/channels/${data?.channel?.id}`,
                 query: {
-                    serverId: params?.serverId
+                    serverId: data?.server?.id
                 }
             });
 
-            await axios.post(url, values);
+            await axios.patch(url, values);
 
-            form.reset();
             router.refresh();
             onClose();
         } catch {

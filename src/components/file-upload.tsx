@@ -143,7 +143,9 @@ const FileUpload = forwardRef<HTMLInputElement, Props>(({
         return undefined;
     }, [fileRejections, dropzoneOptions, isUploadError]);
 
-    const uploadFile = useCallback(async () => {
+    const uploadFile = useCallback(async (e: React.MouseEvent) => {
+        e.stopPropagation();
+
         if (file) {
             setIsUploading(true);
 

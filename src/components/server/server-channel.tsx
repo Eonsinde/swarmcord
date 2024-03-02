@@ -1,6 +1,6 @@
 "use client"
 import { useParams, useRouter } from "next/navigation"
-import { useModal } from "@/hooks/use-modal-store"
+import { ModalType, useModal } from "@/hooks/use-modal-store"
 import { cn } from "@/lib/utils"
 import { Channel, ChannelType, MemberRole, Server } from "@prisma/client"
 import { Edit, Hash, Lock, Mic, Trash, Video } from "lucide-react"
@@ -17,25 +17,35 @@ const iconMap = {
     [ChannelType.AUDIO]: Mic,
     [ChannelType.VIDEO]: Video
 }
+
 const ServerChannel = ({ channel, server, role }: Props) => {
     const router = useRouter();
-    const params = useParams<{ channelId: string }>();
+    const params = useParams<{ serverId: string, channelId?: string }>();
     const { onOpen } = useModal();
 
     const Icon = iconMap[channel.type];
+
+    const handleClick = () => {
+        router.push(`/servers/${params?.serverId}/${channel.id}`);
+    }
+
+    const handleAction = (e: React.MouseEvent, modalType: ModalType) => {
+        e.stopPropagation();
+        onOpen(modalType, { server, channel: { id: channel.id, name: channel.name, type: channel.type } });
+    }
 
     return (
         <button
             className={cn(
                 "group p-2 mb-1 flex items-center gap-x-2 w-full hover:bg-zinc-700/10 dark:hover:bg-zinc-700/50 rounded-md transition",
-                params?.channelId === channel.id && "bg-zinc-700/20 hover:bg-zinc-700"
+                params?.channelId === channel.id && "bg-zinc-700/20 dark:bg-zinc-700 hover:bg-zinc-700/20 dark:hover:bg-zinc-700"
             )}
-            onClick={() => true}
+            onClick={handleClick}
         >
             <Icon className="flex-shrink-0 h-5 w-5 text-muted-foreground" />
             <p className={cn(
                 "line-clamp-1 font-semibold text-sm text-muted-foreground group-hover:text-foreground transition",
-                params?.channelId === channel.id && ""
+                params?.channelId === channel.id && "text-foreground"
             )}>
                 {channel.name}
             </p>
@@ -44,13 +54,13 @@ const ServerChannel = ({ channel, server, role }: Props) => {
                     <ActionTooltip label="Edit">
                         <Edit
                             className="hidden group-hover:block h-4 w-4 text-muted-foreground hover:text-foreground transition"
-                            onClick={() => onOpen("editChannel", { server, channel: { id: channel.id, name: channel.name, type: channel.type } })}
+                            onClick={(e) => handleAction(e, "editChannel")}
                         />
                     </ActionTooltip>
                     <ActionTooltip label="Delete">
                         <Trash
                             className="hidden group-hover:block h-4 w-4 text-muted-foreground hover:text-foreground transition"
-                            onClick={() => onOpen("deleteChannel", { server, channel: { id: channel.id, name: channel.name, type: channel.type } })}
+                            onClick={(e) => handleAction(e, "deleteChannel")}
                         />
                     </ActionTooltip>
                 </div>

@@ -8,9 +8,7 @@ import { ModeToggle } from "@/components/ui/mode-toggle"
 import NavigationAction from "./navigation-action"
 import NavigationItem from "./navigation-item"
 
-type Props = {}
-
-const NavigationSidebar = async (props: Props) => {
+const NavigationSidebar = async () => {
     const profile = await currentProfile();
 
     if (!profile)
@@ -23,13 +21,24 @@ const NavigationSidebar = async (props: Props) => {
                     profileId: profile.id
                 }
             }
+        },
+        include: {
+            channels: {
+                where: {
+                    name: "general"
+                },
+                orderBy: {
+                    createdAt: "asc"
+                }
+            }
         }
     });
 
     return (
         <aside className="h-full w-full flex flex-col items-center space-y-4 py-3 bg-secondary">
+            <NavigationAction variant="directMessages" />
+            <Separator className="bg-zinc-400 dark:bg-[#484d56] h-[2px] w-10 mx-auto rounded-md"/>
             <NavigationAction />
-            <Separator className="bg-[#484d56] h-[2px] w-10 mx-auto rounded-md"/>
             <ScrollArea className="flex-1 w-full">
                 {servers.map((server) => (
                     <div

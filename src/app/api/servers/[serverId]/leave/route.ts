@@ -2,7 +2,6 @@
 import { NextResponse } from "next/server"
 import { db } from "@/lib/db"
 import { currentProfile } from "@/lib/current-profile"
-import { MemberRole } from "@prisma/client"
 
 export async function PATCH(req: Request, { params }: { params: { serverId: string } }) {
     try {

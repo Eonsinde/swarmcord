@@ -5,11 +5,11 @@ import { db } from "@/lib/db"
 import { currentProfile } from "@/lib/current-profile"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Separator } from "@/components/ui/separator"
-import ServerHeader from "./server-header"
-import ServerSearch from "./server-search"
-import ServerSection from "./server-section"
-import ServerChannel from "./server-channel"
-import ServerMember from "./server-member"
+import ServerHeader from "@/components/server/server-header"
+import ServerSearch from "@/components/server/server-search"
+import ServerSection from "@/components/server/server-section"
+import ServerChannel from "@/components/server/server-channel"
+import ServerMember from "@/components/server/server-member"
 
 type Props = {
     serverId: string
@@ -18,20 +18,20 @@ type Props = {
 const iconMap = {
     [ChannelType.TEXT]: <Hash className="mr-2 h-4 w-4" />,
     [ChannelType.AUDIO]: <Mic className="mr-2 h-4 w-4" />,
-    [ChannelType.VIDEO]: <Video className="mr-2 h-4 w-4" />,
+    [ChannelType.VIDEO]: <Video className="mr-2 h-4 w-4" />
 }
 
 const roleIconMap = {
     [MemberRole.GUEST]: null,
     [MemberRole.MODERATOR]: <ShieldCheck className="mr-2 h-4 w-4 text-indigo-500" />,
-    [MemberRole.ADMIN]: <ShieldAlert className="mr-2 h-4 w-4 text-rose-500" />,
+    [MemberRole.ADMIN]: <ShieldAlert className="mr-2 h-4 w-4 text-rose-500" />
 }
 
 const ServerSidebar = async ({ serverId }: Props) => {
     const profile = await currentProfile();
 
     if (!profile)
-        return redirect("/")
+        return redirect("/");
 
     const server = await db.server.findUnique({
         where: {
@@ -114,7 +114,7 @@ const ServerSidebar = async ({ serverId }: Props) => {
                 />
             </div>
             <ScrollArea className="flex-1 px-3">
-                <Separator className="bg-[#484d56] my-2 rounded-md" />
+                <Separator className="bg-zinc-300 dark:bg-[#484d56] my-2 rounded-md" />
                 {!!textChannels?.length && (
                     <div className="mb-2">
                         <ServerSection
@@ -182,7 +182,6 @@ const ServerSidebar = async ({ serverId }: Props) => {
                                 key={member.id}
                                 member={member}
                                 server={server}
-                                role={role}
                             />
                         ))}
                     </div>

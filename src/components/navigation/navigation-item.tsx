@@ -3,7 +3,6 @@ import Image from "next/image"
 import { useParams, useRouter } from "next/navigation"
 import { cn } from "@/lib/utils"
 import ActionTooltip from "@/components/action-tooltip"
-import { Router } from "lucide-react"
 
 type Props = {
     id: string
@@ -34,7 +33,7 @@ const NavigationItem = ({ id, name, imageUrl }: Props) => {
                         "bg-primary absolute left-0 w-[4px] rounded-r-full transition-all",
                         params?.serverId !== id && "group-hover:h-[20px]",
                         params?.serverId === id ? "h-[36px]" : "h-[8px]"
-                    )} 
+                    )}
                 />
                 <div className={cn(
                     "relative group h-[48px] w-[48px] flex mx-3 rounded-[24px] group-hover:rounded-[16px] transition-all overflow-hidden",
@@ -45,6 +44,7 @@ const NavigationItem = ({ id, name, imageUrl }: Props) => {
                         src={imageUrl}
                         fill
                         alt={`${name} channel`}
+                        placeholder="empty"
                     />
                 </div>
             </button>

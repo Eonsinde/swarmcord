@@ -40,7 +40,7 @@ const ServerSection = ({
                     </button>
                 </ActionTooltip>
             )}
-            {role !== MemberRole.ADMIN && sectionType === "members" && (
+            {role === MemberRole.ADMIN && sectionType === "members" && (
                 <ActionTooltip
                     label="Manage Members"
                     side="top"

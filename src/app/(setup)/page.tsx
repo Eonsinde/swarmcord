@@ -5,11 +5,19 @@ import InitialModal from "@/components/modals/initial-modal"
 
 const SetupPage = async () => {
     const profile = await getOrCreateProfile();
+    
     const server = await db.server.findFirst({
         where: {
             members: {
                 some: {
                     profileId: profile.id
+                }
+            }
+        },
+        include: {
+            channels: {
+                where: {
+                    name: "general"
                 }
             }
         }
