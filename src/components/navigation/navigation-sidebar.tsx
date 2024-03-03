@@ -46,9 +46,10 @@ const NavigationSidebar = async () => {
                         className="mb-3"
                     >
                         <NavigationItem
-                            id={server.id}
-                            name={server.name}
-                            imageUrl={server.imageUrl}
+                            serverId={server.id}
+                            defaultChannelId={server.channels[0].id}
+                            serverName={server.name}
+                            serverImage={server.imageUrl}
                         />
                     </div>
                 ))}

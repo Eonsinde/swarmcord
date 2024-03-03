@@ -1,5 +1,6 @@
 "use client"
 import { useParams, useRouter } from "next/navigation"
+import { useActiveChannel } from "@/hooks/use-active-channel" 
 import { ModalType, useModal } from "@/hooks/use-modal-store"
 import { cn } from "@/lib/utils"
 import { Channel, ChannelType, MemberRole, Server } from "@prisma/client"
@@ -21,12 +22,14 @@ const iconMap = {
 const ServerChannel = ({ channel, server, role }: Props) => {
     const router = useRouter();
     const params = useParams<{ serverId: string, channelId?: string }>();
+    const { setActiveServerChannelId } = useActiveChannel(state => state);
     const { onOpen } = useModal();
 
     const Icon = iconMap[channel.type];
 
     const handleClick = () => {
         router.push(`/servers/${params?.serverId}/${channel.id}`);
+        setActiveServerChannelId(server.id, channel.id);
     }
 
     const handleAction = (e: React.MouseEvent, modalType: ModalType) => {
@@ -37,8 +40,8 @@ const ServerChannel = ({ channel, server, role }: Props) => {
     return (
         <button
             className={cn(
-                "group p-2 mb-1 flex items-center gap-x-2 w-full hover:bg-zinc-700/10 dark:hover:bg-zinc-700/50 rounded-md transition",
-                params?.channelId === channel.id && "bg-zinc-700/20 dark:bg-zinc-700 hover:bg-zinc-700/20 dark:hover:bg-zinc-700"
+                "group p-2 mb-1 flex items-center gap-x-2 w-full hover:bg-zinc-700/5 dark:hover:bg-zinc-700/50 rounded-md transition",
+                params?.channelId === channel.id && "bg-zinc-700/10 dark:bg-zinc-700 hover:bg-zinc-700/10 dark:hover:bg-zinc-700"
             )}
             onClick={handleClick}
         >

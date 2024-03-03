@@ -14,7 +14,6 @@ import {
 type Props = {
     data: {
         label: string
-        type: "channel" | "member",
         data: {
             id: string
             name: string
@@ -23,7 +22,7 @@ type Props = {
     } []
 }
 
-const ServerSearch = ({ data }: Props) => {
+const MeSearch = ({ data }: Props) => {
     const [open, setOpen] = useState<boolean>(false);
     const router = useRouter();
     const params = useParams<{ serverId: string }>();
@@ -41,14 +40,11 @@ const ServerSearch = ({ data }: Props) => {
         return () => document.removeEventListener("keydown", down);
     }, []);
 
-    const handleClick = ({ id, type }: { id: string, type: "channel" | "member" }) => {
+    const handleClick = ({ id }: { id: string }) => {
         setOpen(false);
 
-        if (type === "member")
-            return router.push(`/servers/${params?.serverId}/${id}`);
-
-        if (type === "channel")
-            return router.push(`/servers/${params?.serverId}/${id}`);
+        // conversation page
+        return router.push(`/me/${id}`);
     }
 
     return (
@@ -70,7 +66,7 @@ const ServerSearch = ({ data }: Props) => {
                 <CommandInput placeholder="Search all channels and members" />
                 <CommandList>
                     <CommandEmpty>No results found</CommandEmpty>
-                    {data.map(({ label, type, data }) => {
+                    {data.map(({ label, data }) => {
                         if (!data?.length) return null
 
                         return (
@@ -81,7 +77,7 @@ const ServerSearch = ({ data }: Props) => {
                                 {data?.map(({ id, icon, name }) => (
                                     <CommandItem
                                         key={id}
-                                        onSelect={() => handleClick({ id, type })}
+                                        onSelect={() => handleClick({ id })}
                                     >
                                         {icon}
                                         <span>{name}</span>
@@ -96,4 +92,4 @@ const ServerSearch = ({ data }: Props) => {
     );
 }
  
-export default ServerSearch
+export default MeSearch

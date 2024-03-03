@@ -25,7 +25,7 @@ const ServerHeader = ({ server, role }: Props) => {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
-                <button className="group flex items-center h-12 w-full px-3 capitalize border-b-2 border-secondary hover:bg-zinc-700/10 dark:hover:bg-zinc-700/50 transition overflow-hidden">
+                <button className="group flex items-center h-12 w-full px-3 capitalize border-b-2 border-secondary hover:bg-zinc-700/5 dark:hover:bg-zinc-700/50 transition overflow-hidden">
                     <div className="relative flex-1 flex overflow-hidden">
                         <span className="mr-auto truncate text-clip">{server.name}</span>
                         {/* <div className="absolute top-0 right-0 h-full w-[10px] bg-gradient-to-l from-[#2B2C31] group-hover:opacity-0 transition-opacity delay-300" /> */}

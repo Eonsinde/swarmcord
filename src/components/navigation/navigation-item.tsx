@@ -1,26 +1,32 @@
 "use client"
 import Image from "next/image"
 import { useParams, useRouter } from "next/navigation"
+import { useActiveChannel } from "@/hooks/use-active-channel"
 import { cn } from "@/lib/utils"
 import ActionTooltip from "@/components/action-tooltip"
 
 type Props = {
-    id: string
-    name: string
-    imageUrl: string
+    serverId: string
+    defaultChannelId: string
+    serverName: string
+    serverImage: string
 }
 
-const NavigationItem = ({ id, name, imageUrl }: Props) => {
+const NavigationItem = ({ serverId, defaultChannelId, serverName, serverImage }: Props) => {
     const params = useParams<{ serverId: string }>();
     const router = useRouter();
+    const { activeServerId, activeChannelId } = useActiveChannel(state => state);
 
     const onClick = () => {
-        router.push(`/servers/${id}`);
+        // this function helps navigate to previously active channel under a server or the default channel
+        if (serverId === activeServerId && activeChannelId)
+            return router.push(`/servers/${serverId}/${activeChannelId}`);
+        return router.push(`/servers/${serverId}/${defaultChannelId}`);
     }
 
     return (
         <ActionTooltip
-            label={name}
+            label={serverName}
             side="right"
             align="center"
         >
@@ -31,19 +37,19 @@ const NavigationItem = ({ id, name, imageUrl }: Props) => {
                 <div
                     className={cn(
                         "bg-primary absolute left-0 w-[4px] rounded-r-full transition-all",
-                        params?.serverId !== id && "group-hover:h-[20px]",
-                        params?.serverId === id ? "h-[36px]" : "h-[8px]"
+                        params?.serverId !== serverId && "group-hover:h-[20px]",
+                        params?.serverId === serverId ? "h-[36px]" : "h-[8px]"
                     )}
                 />
                 <div className={cn(
                     "relative group h-[48px] w-[48px] flex mx-3 rounded-[24px] group-hover:rounded-[16px] transition-all overflow-hidden",
-                    params?.serverId === id && "bg-primary/10 text-primary rounded-[16px]"
+                    params?.serverId === serverId && "bg-primary/10 text-primary rounded-[16px]"
                 )}>
                     <Image
                         className="object-cover"
-                        src={imageUrl}
+                        src={serverImage}
                         fill
-                        alt={`${name} channel`}
+                        alt={`${serverName} channel`}
                         placeholder="empty"
                     />
                 </div>

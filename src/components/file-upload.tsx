@@ -185,7 +185,7 @@ const FileUpload = forwardRef<HTMLInputElement, Props>(({
                         className="absolute top-0 right-0 bg-indigo-600 hover:bg-indigo-600/90 disabled:hover:bg-indigo-600 text-white p-1 rounded-full"
                         onClick={() => {
                             setFile(undefined);
-                            onChange(undefined)
+                            onChange("")
                         }}
                         disabled={disabled}
                     >
