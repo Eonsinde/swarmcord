@@ -24,11 +24,12 @@ const SetupPage = async () => {
     });
 
     if (server)
-        return redirect(`/servers/${server.id}/${server.channels[0].id}`);
+        // return redirect(`/servers/${server.id}/${server.channels[0].id}`);
+        return redirect("/me");
 
     return (
         <InitialModal />
-    );
+    )
 }
  
-export default SetupPage;
+export default SetupPage

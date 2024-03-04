@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils"
 import { cva, type VariantProps } from "class-variance-authority"
 import { icons } from "lucide-react"
 import ActionTooltip from "@/components/action-tooltip"
-import SwarmSvg from "../../../public/svgs/swarm-bee.svg"
+import SwarmSvg from "../../../public/svgs/mask.svg"
 
 const variants = cva(
     "flex justify-center items-center h-[48px] w-[48px] mx-3 bg-background rounded-[24px] group-hover:rounded-[16px] overflow-hidden transition-all",
@@ -104,7 +104,7 @@ const NavigationAction = ({ variant="createServer", iconName="ban" }: Props) => 
                         {CustomIcon ? (
                             <CustomIcon
                                 className={cn(
-                                    "text-foreground group-hover:text-white dark:group-hover:text-foreground",
+                                    "text-emerald-500 group-hover:text-white dark:group-hover:text-foreground",
                                     (trailingString === "me" || trailingString === "rocket") ? variant === "directMessages" ? "text-white dark:text-foreground" : "" : ""
                                 )}
                                 size={25}

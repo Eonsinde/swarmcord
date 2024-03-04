@@ -1,3 +1,8 @@
+import { redirect } from "next/navigation"
+import { redirectToSignIn } from "@clerk/nextjs"
+import { db } from "@/lib/db"
+import { currentProfile } from "@/lib/current-profile"
+import ChatHeader from "@/components/conversation/chat-header"
 
 type Props = {
     params: {
@@ -6,14 +11,39 @@ type Props = {
     }
 }
 
-const ServerDetails = ({ params: { serverId, channelId } }: Props) => {
-    // const { serverId } = useParams<{ serverId: string }>();
-    
+const ChannelIdPage = async ({ params: { serverId, channelId } }: Props) => {
+    const profile = await currentProfile();
+
+    if (!profile)
+        return redirectToSignIn();
+
+    const channel = await db.channel.findUnique({
+        where: {
+            id: channelId
+        }
+    });
+
+    const member = await db.member.findFirst({
+        where: {
+            serverId,
+            profileId: profile.id
+        }
+    });
+
+    if (!channel || !member)
+        return redirect("/me");
+
     return (
-        <div>
+        <div className="h-full flex flex-col">
+            <ChatHeader
+                serverId={serverId}
+                name={channel.name}
+                type="channel"
+                channelType={channel.type}
+            />
             Server Details Page {serverId} | Channel: {channelId}
         </div>
     )
 }
 
-export default ServerDetails
+export default ChannelIdPage
