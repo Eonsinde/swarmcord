@@ -1,7 +1,7 @@
 import { ArrowUpFromLine, Image, Rocket, Server, Tv } from "lucide-react"
 import CoverSvg from "../../../../../public/svgs/rocket-cover.svg"
 
-const Ultimate = () => {
+const RocketPage = () => {
     return (
         <div className="h-full">
             <header className="flex items-center h-12 px-3 border-b-2 border-secondary">
@@ -80,4 +80,4 @@ const Ultimate = () => {
     )
 }
  
-export default Ultimate
+export default RocketPage

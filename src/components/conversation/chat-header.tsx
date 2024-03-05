@@ -1,6 +1,5 @@
-"use client"
 import { ChannelType } from "@prisma/client"
-import { Hash, Menu, Mic, Video } from "lucide-react"
+import { Hash, Mic, Video } from "lucide-react"
 import MobileToggle from "@/components/mobile-toggle"
 
 type Props = {
@@ -20,7 +19,7 @@ const iconMap = {
 const ChatHeader = ({ serverId, name, type, channelType, imageUrl }: Props) => {
     return (
         <div className="flex items-center h-12 px-3 text-base border-b-2 border-secondary">
-            <MobileToggle />
+            <MobileToggle serverId={serverId} />
             {type === "channel" && channelType && (
                 <>
                     {iconMap[channelType]}

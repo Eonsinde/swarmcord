@@ -5,7 +5,7 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import FriendsBlank from "./friends-blank"
 
 type Props = {
-    friends: any[]
+    friends: any [] | null
 }
 
 const FriendsSection = ({ friends }: Props) => {
@@ -27,7 +27,7 @@ const FriendsSection = ({ friends }: Props) => {
                     </button>
                 </ActionTooltip>
             </header>
-           <FriendsBlank />
+            <FriendsBlank />
             <ScrollArea className="flex-1 w-full">
 
             </ScrollArea>

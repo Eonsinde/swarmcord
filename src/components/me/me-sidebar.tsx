@@ -1,5 +1,10 @@
+import { Conversation } from "@prisma/client"
 import MeItem from "./me-item"
 import FriendsSection from "./friends-section"
+
+type Props = {
+    conversations: Conversation [] | null
+}
 
 const routes = [
     {
@@ -14,9 +19,7 @@ const routes = [
     }
 ];
 
-const MeSidebar = async () => {
-    // TODO: fetch friends here
-
+const MeSidebar = async ({ conversations }: Props) => {
     return (
         <div className="h-full w-full flex flex-col bg-[#F2F3F5] dark:bg-[#2B2C31]">
             <div className="mt-2 px-3">
@@ -29,7 +32,7 @@ const MeSidebar = async () => {
                     />
                 ))}
             </div>
-            <FriendsSection friends={[]} />
+            <FriendsSection friends={conversations} />
         </div>
     );
 }

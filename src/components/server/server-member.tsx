@@ -28,7 +28,7 @@ const ServerMember = ({ member, server }: Props) => {
                 "group p-2 mb-1 flex items-center gap-x-2 w-full hover:bg-zinc-700/10 dark:hover:bg-zinc-700/50 rounded-md transition overflow-hidden",
                 // params?.channelId === channel.id && "bg-zinc-700/20 hover:bg-zinc-700"
             )}
-            onClick={() => true}
+            onClick={() => router.push(`/me/${member.id}`)}
         >
             <div className="flex-1 flex items-center overflow-hidden">
                 <UserAvatar
