@@ -4,12 +4,13 @@ import { useParams, useRouter } from "next/navigation"
 import { useActiveChannel } from "@/hooks/use-active-channel"
 import { cn } from "@/lib/utils"
 import ActionTooltip from "@/components/action-tooltip"
+import { AvatarFallback } from "@/components/ui/avatar"
 
 type Props = {
     serverId: string
     defaultChannelId: string
     serverName: string
-    serverImage: string
+    serverImage: string | null
 }
 
 const NavigationItem = ({ serverId, defaultChannelId, serverName, serverImage }: Props) => {
@@ -45,13 +46,17 @@ const NavigationItem = ({ serverId, defaultChannelId, serverName, serverImage }:
                     "relative group h-[48px] w-[48px] flex mx-3 rounded-[24px] group-hover:rounded-[16px] transition-all overflow-hidden",
                     params?.serverId === serverId && "bg-primary/10 text-primary rounded-[16px]"
                 )}>
-                    <Image
-                        className="object-cover"
-                        src={serverImage}
-                        fill
-                        alt={`${serverName} channel`}
-                        placeholder="empty"
-                    />
+                    {serverImage ? (
+                        <Image
+                            className="object-cover"
+                            src={serverImage}
+                            fill
+                            alt={`${serverName} channel`}
+                            placeholder="empty"
+                        />
+                    ): (
+                        <AvatarFallback className="">{serverName.split(" ")}</AvatarFallback>
+                    )}
                 </div>
             </button>
         </ActionTooltip>

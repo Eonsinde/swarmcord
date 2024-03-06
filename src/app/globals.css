@@ -6,7 +6,7 @@ html,
 body,
 :root {
   height: 100%;
-  /* background-color: #ebebeb; */
+  /* background-color: #404349; */
 }
 
 @layer base {
@@ -90,4 +90,32 @@ body,
   body {
     @apply bg-background text-foreground;
   }
+}
+
+
+/* for CSS transition */
+.create-server-menu-primary-enter {
+  position: absolute;
+  transform: translateX(-110%);
+}
+.create-server-menu-primary-enter-active,
+.create-server-menu-secondary-enter-active {
+  transform: translateX(0%);
+  transition: all 500ms ease;
+}
+.create-server-menu-primary-exit,
+.create-server-menu-secondary-exit {
+  position: absolute;
+}
+.create-server-menu-primary-exit-active {
+  transform: translateX(-110%);
+  transition: all 500ms ease;
+}
+.create-server-menu-secondary-enter {
+  position: absolute;
+  transform: translateX(110%);
+}
+.create-server-menu-secondary-exit-active {
+  transform: translateX(110%);
+  transition: all 500ms ease;
 }

@@ -8,7 +8,7 @@ import { X, LucideUploadCloud, Loader2 } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 const variants = {
-    base: "relative rounded-md flex justify-center items-center flex-col cursor-pointer border-[1px] border-dashed border-input transition-colors duration-200 ease-in-out",
+    base: "relative rounded-md flex flex-col justify-center items-center bg-accent  border-[1px] border-dashed border-input transition-colors duration-200 ease-in-out cursor-pointer",
     image:
       "border-0 p-0 min-h-0 min-w-0 relative shadow-md bg-background rounded-md",
     active: "border-2",
@@ -37,8 +37,9 @@ type Props = {
     className?: string
     width?: number
     height?: number
-    value?: File | string;
-    onChange: (file?: File | string) => void | Promise<void>;
+    label?: string
+    value?: File | string
+    onChange: (file?: File | string) => void | Promise<void>
     endpoint: "serverImage" | "messageFile"
     disabled?: boolean
     dropzoneOptions?: Omit<DropzoneOptions, "disabled">
@@ -48,6 +49,7 @@ const FileUpload = forwardRef<HTMLInputElement, Props>(({
     className,
     height=220,
     width,
+    label,
     value,
     endpoint,
     disabled,
@@ -212,17 +214,19 @@ const FileUpload = forwardRef<HTMLInputElement, Props>(({
                     {...getInputProps()}
                 />
                 {/* upload box */}
-                <div className="relative flex flex-col justify-center items-center space-y-4 text-muted-foreground">
+                <div className="relative flex flex-col justify-center items-center space-y-2 text-muted-foreground">
                     {isUploading
                     ?
                     <>
                         
-                        <Loader2 className="h-12 w-12 animate-spin" />
+                        <Loader2 className="mb-2 h-12 w-12 animate-spin" />
+                        {label && <div className="text-foreground text-sm">{label}</div>}
                         <div className="text-sm">Uploading</div>
                     </>
                     :
                     <>
-                        <LucideUploadCloud className="h-12 w-12" />
+                        <LucideUploadCloud className="mb-2 h-12 w-12" />
+                        {label && <div className="text-foreground text-sm">{label}</div>}
                         <div className="text-sm">Drag & Drop to upload</div>
                     </>}
                     {file && !isUploading && !errorMessage && (

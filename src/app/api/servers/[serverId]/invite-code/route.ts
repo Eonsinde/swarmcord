@@ -25,7 +25,7 @@ export async function PATCH(req: Request, { params }: { params: { serverId: stri
 
         return NextResponse.json(server);
     } catch (error) {
-        console.log("SERVER_ID ERR: generate new link");
+        console.log("[SERVER_ID_INVITE_CODE]", error);
         return new NextResponse("Server Error", { status: 500 });
     }
 }

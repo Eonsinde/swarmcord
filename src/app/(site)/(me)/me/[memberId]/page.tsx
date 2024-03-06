@@ -6,11 +6,11 @@ import { Menu } from "lucide-react"
 
 type Props = {
     params: {
-        conversationId: string // this is the other user the auth user is conversing with
+        memberId: string // this is the other user the auth user is conversing with
     }
 }
 
-const ConversationIdPage = async ({ params: { conversationId } }: Props) => {
+const ConversationIdPage = async ({ params: { memberId } }: Props) => {
     // const conversation = await getOrCreateConversation();
 
     return (

@@ -7,17 +7,33 @@ import { currentProfile } from "@/lib/current-profile"
 
 export async function POST(req: Request) {
     try {
-        const { name, imageUrl } = await req.json();
+        const { name, imageUrl, categoryId } = await req.json();
         const profile = await currentProfile();
 
         if (!profile)
             return new NextResponse("Unauthorized", { status: 401 });
 
+        if (!name)
+            return new NextResponse("Server name is missing", { status: 400 });
+
+        if (!categoryId)
+            return new NextResponse("Category ID is missing", { status: 400 });
+
+        const defaultCategory = await db.category.findFirst({
+            where: {
+                name: "local community"
+            }
+        });
+
+        if (!defaultCategory)
+            return new NextResponse("Default Category not found", { status: 400 });
+
         const server = await db.server.create({
             data: {
                 creatorId: profile.id,
                 name,
-                imageUrl,
+                imageUrl: imageUrl || null,
+                categoryId: categoryId || defaultCategory.id,
                 inviteCode: uuidv4(),
                 channels: {
                     create: [
