@@ -48,7 +48,7 @@ const InviteModal = () => {
             open={isModalOpen}
             onOpenChange={onClose}
         >
-            <DialogContent className="max-w-[90%] sm:max-w-[425px]">
+            <DialogContent className="max-w-[90%] sm:max-w-[450px]">
                 <DialogHeader>
                     <DialogTitle>Invite friends to <span className="capitalize">{data?.server?.name}</span></DialogTitle>
                     <DialogDescription>

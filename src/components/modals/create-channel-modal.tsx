@@ -59,7 +59,7 @@ const CreateChannelModal = () => {
         resolver: zodResolver(formSchema),
         defaultValues: {
             name: "",
-            type: ""
+            type: ChannelType.TEXT
         }
     });
 
@@ -100,7 +100,7 @@ const CreateChannelModal = () => {
             open={isModalOpen}
             onOpenChange={handleClose}
         >
-            <DialogContent className="sm:max-w-[425px]">
+            <DialogContent className="sm:max-w-[450px]">
                 <DialogHeader>
                     <DialogTitle>Create channel</DialogTitle>
                     <DialogDescription>

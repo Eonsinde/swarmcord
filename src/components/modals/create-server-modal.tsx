@@ -52,8 +52,6 @@ const CreateServerModal = () => {
 
     const isModalOpen = useMemo(() => isOpen && type === "createServer", [isOpen, type]);
 
-    console.log("\n\n\nisModalOpen", isModalOpen);
-
     const form = useForm({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -84,6 +82,7 @@ const CreateServerModal = () => {
 
     const handleClose = () => {
         form.reset();
+        setActivePage("categories");
         onClose();
     }
 
@@ -112,11 +111,10 @@ const CreateServerModal = () => {
             onOpenChange={handleClose}
         >
             <DialogContent
-                className="h-full md:h-auto max-w-full md:max-w-[425px] p-0 transition-height duration-500 overflow-hidden"
+                className="h-full md:h-auto max-w-full md:max-w-[450px] p-0 transition-height duration-500 overflow-hidden"
                 style={{
                     height: menuHeight
                 }}
-                showCloseBtn={false}
             >
                 <CSSTransition
                     classNames="create-server-menu-primary"
@@ -294,6 +292,7 @@ const CreateServerModal = () => {
                         </DialogHeader>
                         <JoinServer
                             onBackAction={() => setActivePage("categories")}
+                            onCloseModal={handleClose }
                         />
                     </div>
                 </CSSTransition>

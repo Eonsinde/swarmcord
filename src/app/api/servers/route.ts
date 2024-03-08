@@ -5,6 +5,62 @@ import { MemberRole } from "@prisma/client"
 import { db } from "@/lib/db"
 import { currentProfile } from "@/lib/current-profile"
 
+export async function GET(req: Request) {
+    try {
+        const { searchParams } = new URL(req.url);
+        const category = searchParams.get("category");
+
+        const profile = await currentProfile();
+
+        if (!profile)
+            return new NextResponse("Unauthorized", { status: 401 });
+
+        if (!category || category === "communities") {
+            // return all servers if no category is providee
+            const allServers = await db.server.findMany({
+                include: {
+                    members: {
+                        include: {
+                            _count: true
+                        }
+                    }
+                }
+            });
+            return NextResponse.json(allServers);
+        }
+
+        const existingCategory = await db.category.findFirst({
+            where: {
+                name: {
+                    equals: category
+                }
+            },
+            include: {
+                servers: {
+                    include: {
+
+                        members: {
+                            include: {
+                                _count: true
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    
+        if (!existingCategory)
+            return new NextResponse("Category not found", { status: 401 });
+    
+        const servers = existingCategory.servers;
+
+        return NextResponse.json(servers);
+    } catch (error) {
+        console.log("[FETCH_SERVERS]", error);
+        return new NextResponse("Server Error", { status: 500 });
+    }
+}
+
 export async function POST(req: Request) {
     try {
         const { name, imageUrl, categoryId } = await req.json();

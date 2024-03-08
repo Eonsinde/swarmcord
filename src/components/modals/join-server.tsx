@@ -12,7 +12,8 @@ import { DialogFooter } from "@/components/ui/dialog"
 import CompassSvg from "../../../public/svgs/compass.svg"
 
 type Props = {
-    onBackAction: () => void
+    onBackAction: () => void,
+    onCloseModal: () => void
 }
 
 const formSchema = z.object({
@@ -21,7 +22,7 @@ const formSchema = z.object({
     })
 });
 
-const JoinServer = ({ onBackAction }: Props) => {
+const JoinServer = ({ onBackAction, onCloseModal }: Props) => {
     const router = useRouter();
 
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -77,13 +78,16 @@ const JoinServer = ({ onBackAction }: Props) => {
                     <button
                         className="p-3 w-full flex justify-between items-center bg-[#F2F3F5] dark:bg-[#2B2C31] hover:bg-zinc-700/5 dark:hover:bg-[#404349] rounded-md transition"
                         type="button"
-                        onClick={() => router.push("/explore")}
+                        onClick={() => {
+                            router.push("/explore");
+                            onCloseModal();
+                        }}
                     >
                         <div className="flex-1 flex items-center space-x-3">
                             <div className="h-10 w-10 flex justify-center items-center bg-emerald-500 rounded-full">
                                 <CompassSvg className="h-6 w-6 stroke-white fill-white" />
                             </div>
-                            <div className="flex flex-col items-start">
+                            <div className="text-left">
                                 <h3 className="text-foreground font-semibold">Don't have an invite?</h3>
                                 <p className="text-xs text-muted-foreground">Explore discoverable communities in Server Discovery</p>
                             </div>

@@ -1,5 +1,4 @@
 import { redirectToSignIn } from "@clerk/nextjs"
-import { db } from "@/lib/db"
 import { currentProfileWithMembers } from "@/lib/current-profile"
 import MeSidebar from "@/components/me/me-sidebar"
 import { getConversations } from "@/lib/conversation"
@@ -15,8 +14,6 @@ const MeLayout = async ({
         return redirectToSignIn();
 
     const conversations = await getConversations(profile.members.map((member => member.id)));
-
-    console.log("\n\n\nExisting Conversations:", conversations);
 
     return (
         <div className="h-full">

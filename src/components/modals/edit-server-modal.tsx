@@ -79,7 +79,7 @@ const EditServerModal = () => {
             open={isModalOpen}
             onOpenChange={onClose}
         >
-            <DialogContent className="sm:max-w-[425px]">
+            <DialogContent className="sm:max-w-[450px]">
                 <DialogHeader>
                     <DialogTitle>Edit server</DialogTitle>
                     <DialogDescription>

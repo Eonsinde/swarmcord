@@ -93,7 +93,7 @@ body,
 }
 
 
-/* for CSS transition */
+/* for CSS transition for create server */
 .create-server-menu-primary-enter {
   position: absolute;
   transform: translateX(-110%);
@@ -117,5 +117,32 @@ body,
 }
 .create-server-menu-secondary-exit-active {
   transform: translateX(110%);
+  transition: all 500ms ease;
+}
+
+/* for CSS transition for pricings */
+.pricings-menu-primary-enter {
+  position: absolute;
+  transform: scale(0.75) translateY(10px) translateZ(10px) perspective(200px);
+}
+.pricings-menu-primary-enter-active,
+.pricings-menu-secondary-enter-active {
+  transform: scale(1) translateY(0px) translateZ(0px) perspective(200px);
+  transition: all 500ms ease;
+}
+.pricings-menu-primary-exit,
+.pricings-menu-secondary-exit {
+  position: absolute;
+}
+.pricings-menu-primary-exit-active {
+  transform: scale(0.75) translateY(10px) translateZ(10px) perspective(200px);
+  transition: all 500ms ease;
+}
+.pricings-menu-secondary-enter {
+  position: absolute;
+  transform: scale(0.75) translateY(10px) translateZ(20px) perspective(200px);
+}
+.pricings-menu-secondary-exit-active {
+  transform: scale(0.75) translateY(10px) translateZ(20px) perspective(200px);
   transition: all 500ms ease;
 }

@@ -33,7 +33,7 @@ const MeItem = ({ name, path, iconName }: Props) => {
         >
             <CustomIcon
                 className={cn(
-                    "flex-shrink-0 h-5 w-5 text-muted-foreground",
+                    "flex-shrink-0 h-6 w-6 text-muted-foreground",
                 )}
             />
             <p className={cn(

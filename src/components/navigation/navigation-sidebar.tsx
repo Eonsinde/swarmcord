@@ -7,6 +7,7 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { ModeToggle } from "@/components/ui/mode-toggle"
 import NavigationAction from "./navigation-action"
 import NavigationItem from "./navigation-item"
+import NavigationLink from "./navigation-link"
 
 const NavigationSidebar = async () => {
     const profile = await currentProfile();
@@ -36,9 +37,10 @@ const NavigationSidebar = async () => {
 
     return (
         <aside className="h-full w-full flex flex-col items-center space-y-4 py-3 bg-secondary">
-            <NavigationAction variant="directMessages" />
+            <NavigationLink variant="directMessages" />
             <Separator className="bg-zinc-400 dark:bg-[#484d56] h-[2px] w-10 mx-auto rounded-md"/>
-            <NavigationAction />
+            <NavigationAction iconName="Plus" />
+            <NavigationLink variant="explore" />
             <ScrollArea className="flex-1 w-full">
                 {servers.map((server) => (
                     <div

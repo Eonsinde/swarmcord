@@ -29,6 +29,9 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
+        <head>
+          <link rel="icon" href="/favicon.ico" sizes="any" />
+        </head>
         <body className={`${font.className} ${archivo_black.variable}`} suppressHydrationWarning>
           <EdgeStoreProvider>
             <ThemeProvider

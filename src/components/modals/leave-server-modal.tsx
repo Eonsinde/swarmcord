@@ -42,7 +42,7 @@ const LeaveServerModal = () => {
             open={isModalOpen}
             onOpenChange={onClose}
         >
-            <DialogContent className="max-w-[90%] sm:max-w-[425px]">
+            <DialogContent className="max-w-[90%] sm:max-w-[450px]">
                 <DialogHeader>
                     <DialogTitle>Leave Server</DialogTitle>
                     <DialogDescription>

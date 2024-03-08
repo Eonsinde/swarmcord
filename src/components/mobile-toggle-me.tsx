@@ -2,13 +2,9 @@ import { Menu } from "lucide-react"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Button } from "@/components/ui/button"
 import NavigationSidebar from "@/components/navigation/navigation-sidebar"
-import ServerSidebar from "@/components/server/server-sidebar"
+import MeSidebar from "@/components/me/me-sidebar"
 
-const MobileToggle = ({
-    serverId
-}: {
-    serverId: string
-}) => {
+const MobileToggleMe = () => {
     return (
         <Sheet>
             <SheetTrigger asChild>
@@ -21,16 +17,16 @@ const MobileToggle = ({
                 </Button>
             </SheetTrigger>
             <SheetContent
-                className="p-0 w-full flex gap-0"
+                className="p-0 flex gap-0"
                 side="left"
             >
                 <div className="w-[72px]">
                     <NavigationSidebar />
                 </div>
-                <ServerSidebar serverId={serverId} />
+                <MeSidebar conversations={[]} />
             </SheetContent>
         </Sheet>
     )
 }
  
-export default MobileToggle
+export default MobileToggleMe
