@@ -44,6 +44,7 @@ const JoinServer = ({ onBackAction, onCloseModal }: Props) => {
 
             form.reset();
             router.push(`/servers/${response.data.id}/${response.data.channels[0].id}`);
+            router.refresh();
             onCloseModal();
         } catch {
             // show error message

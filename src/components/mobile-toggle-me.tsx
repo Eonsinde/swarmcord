@@ -1,10 +1,15 @@
+import { Conversation } from "@prisma/client"
 import { Menu } from "lucide-react"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Button } from "@/components/ui/button"
 import NavigationSidebar from "@/components/navigation/navigation-sidebar"
 import MeSidebar from "@/components/me/me-sidebar"
 
-const MobileToggleMe = () => {
+type Props ={
+    conversations?: Conversation []
+}
+
+const MobileToggleMe = ({ conversations }: Props) => {
     return (
         <Sheet>
             <SheetTrigger asChild>
@@ -23,7 +28,7 @@ const MobileToggleMe = () => {
                 <div className="w-[72px]">
                     <NavigationSidebar />
                 </div>
-                <MeSidebar conversations={[]} />
+                <MeSidebar conversations={conversations} />
             </SheetContent>
         </Sheet>
     )

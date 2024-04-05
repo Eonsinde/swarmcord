@@ -6,12 +6,12 @@ const getConversations = async (membershipIds: string []) => {
             where: {
                 OR: [
                     {
-                        memberOneId: {
+                        profileOneId: {
                             in: membershipIds
                         }
                     },
                     {
-                        memberTwoId: {
+                        profileTwoId: {
                             in: membershipIds
                         }
                     }
@@ -30,14 +30,12 @@ const getConversationById = async (conversationId: string) => {
                 id: conversationId
             },
             include: {
-                memberOne: {
+                profileOne: {
                     include: {
-                        profile: true
                     }
                 },
-                memberTwo: {
+                profileTwo: {
                     include: {
-                        profile: true
                     }
                 }
             }
@@ -51,39 +49,34 @@ const getConversationById = async (conversationId: string) => {
     }
 }
 
-const getOrCreateConversation = async (memberOneId: string, memberTwoId: string) => {
+const getOrCreateConversation = async (profileOneId: string, profileTwoId: string) => {
     try {
-        let conversation = await findConversation(memberOneId, memberTwoId) || await findConversation(memberTwoId, memberOneId);
+        let conversation = null;
+        
+        conversation = await findConversation(profileOneId, profileTwoId);
+        // let existingConversation = await findConversation(profileOneId, profileTwoId) || await findConversation(profileTwoId, profileOneId);
 
         if (!conversation)
-            conversation = await createNewConversation(memberOneId, memberTwoId);
-
+            conversation = await createNewConversation(profileOneId, profileTwoId);
+    
         return conversation;
     } catch {
         return null;
     }
 }
 
-const findConversation = async (memberOneId: string, memberTwoId: string) => {
+const findConversation = async (profileOneId: string, profileTwoId: string) => {
     try {
         return await db.conversation.findFirst({
             where: {
                 OR: [
-                    { memberOneId },
-                    { memberTwoId }
+                    { profileOneId: profileTwoId, profileTwoId: profileOneId },
+                    { profileOneId, profileTwoId }
                 ]
             },
             include: {
-                memberOne: {
-                    include: {
-                        profile: true
-                    }
-                },
-                memberTwo: {
-                    include: {
-                        profile: true
-                    }
-                }
+                profileOne: true,
+                profileTwo: true
             }
         });
     } catch {
@@ -91,27 +84,21 @@ const findConversation = async (memberOneId: string, memberTwoId: string) => {
     }
 }
 
-const createNewConversation = async (memberOneId: string, memberTwoId: string) => {
+const createNewConversation = async (profileOneId: string, profileTwoId: string) => {
     try {
-        return await db.conversation.create({
+        const conversation = await db.conversation.create({
             data: {
-                memberOneId,
-                memberTwoId
+                profileOneId,
+                profileTwoId
             },
             include: {
-                memberOne: {
-                    include: {
-                        profile: true
-                    }
-                },
-                memberTwo: {
-                    include: {
-                        profile: true
-                    }
-                }
+                profileOne: true,
+                profileTwo: true
             }
-        })
-    } catch {
+        });
+
+        return conversation;
+    } catch (err) {
         return null;
     }
 }

@@ -3,7 +3,7 @@ import MeItem from "./me-item"
 import FriendsSection from "./friends-section"
 
 type Props = {
-    conversations: Conversation [] | null
+    conversations?: Conversation []
 }
 
 const routes = [

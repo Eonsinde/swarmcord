@@ -18,7 +18,7 @@ const MeLayout = async ({
     return (
         <div className="h-full">
             <div className="fixed inset-y-0 z-20 hidden md:flex h-full w-60 flex-col">
-                <MeSidebar conversations={conversations} />
+                <MeSidebar conversations={conversations!} />
             </div>
             <main className="h-full md:pl-60">
                 {children}

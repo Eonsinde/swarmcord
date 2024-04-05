@@ -3,6 +3,8 @@ import { Handshake } from "lucide-react"
 import MobileToggleMe from "@/components/mobile-toggle-me"
 
 const Me = () => {
+    // make request here to fetch conversations
+
     return (
         <div>
             <Head>

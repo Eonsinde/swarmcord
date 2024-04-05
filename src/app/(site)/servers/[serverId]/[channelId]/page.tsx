@@ -3,6 +3,7 @@ import { redirectToSignIn } from "@clerk/nextjs"
 import { db } from "@/lib/db"
 import { currentProfile } from "@/lib/current-profile"
 import ChatHeader from "@/components/conversation/chat-header"
+import ChatInput from "@/components/conversation/chat-input"
 
 type Props = {
     params: {
@@ -41,7 +42,20 @@ const ChannelIdPage = async ({ params: { serverId, channelId } }: Props) => {
                 type="channel"
                 channelType={channel.type}
             />
-            Server Details Page {serverId} | Channel: {channelId}
+            <div className="flex-1 flex justify-center items-center">
+                <p>
+                    Server Details Page {serverId} | Channel: {channelId}
+                </p>
+            </div>
+            <ChatInput
+                name={channel.name}
+                type="channel"
+                apiUrl="/api/socket/messages"
+                query={{
+                    channelId: channel.id,
+                    serverId: channel.serverId
+                }}
+            />
         </div>
     )
 }

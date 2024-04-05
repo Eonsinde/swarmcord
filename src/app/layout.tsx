@@ -5,6 +5,7 @@ import { EdgeStoreProvider } from "@/lib/edgestore"
 import "./globals.css"
 import ThemeProvider from "@/providers/ThemeProvider"
 import { ModalProvider } from "@/providers/ModalProvider"
+import SocketProvider from "@/providers/SocketProvider"
 
 const font = Open_Sans({ subsets: ["latin"] });
 
@@ -34,15 +35,17 @@ export default function RootLayout({
         </head>
         <body className={`${font.className} ${archivo_black.variable}`} suppressHydrationWarning>
           <EdgeStoreProvider>
-            <ThemeProvider
-              attribute="class"
-              defaultTheme="dark"
-              enableSystem
-              storageKey="swarmcord"
-            >
-              <ModalProvider />
-              {children}
-            </ThemeProvider>
+            <SocketProvider>
+              <ThemeProvider
+                attribute="class"
+                defaultTheme="dark"
+                enableSystem
+                storageKey="swarmcord"
+              >
+                <ModalProvider />
+                {children}
+              </ThemeProvider>
+            </SocketProvider>
           </EdgeStoreProvider>
         </body>
       </html>

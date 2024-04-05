@@ -119,7 +119,8 @@ model Channel {
 }
 
 model Message {
-  id String @id @default(uuid()) @map("_id") @db.ObjectId
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  // id String @id @default(uuid()) @map("_id") @db.ObjectId
   content String @db.String
 
   fileUrl String? @db.String
@@ -140,7 +141,8 @@ model Message {
 }
 
 model Conversation {
-  id String @id @default(uuid()) @map("_id") @db.ObjectId
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  // id String @id @default(uuid()) @map("_id") @db.ObjectId
 
   profileOneId String @db.ObjectId
   profileOne Profile @relation("ProfileOne", fields: [profileOneId], references: [id], onDelete: Cascade)
@@ -160,7 +162,8 @@ model Conversation {
 }
 
 model DirectMessage {
-  id String @id @default(uuid()) @map("_id") @db.ObjectId
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  // id String @id @default(uuid()) @map("_id") @db.ObjectId
   content String @db.String
 
   fileUrl String? @db.String

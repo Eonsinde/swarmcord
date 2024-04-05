@@ -5,7 +5,7 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import FriendsBlank from "./friends-blank"
 
 type Props = {
-    friends: any [] | null
+    friends?: any []
 }
 
 const FriendsSection = ({ friends }: Props) => {

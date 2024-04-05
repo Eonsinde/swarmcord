@@ -75,7 +75,7 @@ const CreateServerModal = () => {
                 }
             })();
         }
-    }, []);
+    }, [isModalOpen]);
 
     const calcHeight = (el: any) => {
         const height = el?.offsetHeight;

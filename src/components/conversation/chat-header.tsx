@@ -1,6 +1,7 @@
 import { ChannelType } from "@prisma/client"
 import { Hash, Mic, Video } from "lucide-react"
 import MobileToggle from "@/components/mobile-toggle"
+import SocketIndicator from "@/components/socket-indicator"
 
 type Props = {
     serverId: string
@@ -26,6 +27,9 @@ const ChatHeader = ({ serverId, name, type, channelType, imageUrl }: Props) => {
                 </>
             )}
             <p className="text-foreground">{name}</p>
+            <div className="ml-auto flex items-center">
+                <SocketIndicator />
+            </div>
         </div>
     )
 }
