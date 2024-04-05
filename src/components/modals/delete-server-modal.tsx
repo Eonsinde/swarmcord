@@ -29,7 +29,7 @@ const DeleteServerModal = () => {
 
             onClose();
             router.refresh();
-            router.push("/");
+            router.push("/me");
         } catch (error) {
             
         } finally {

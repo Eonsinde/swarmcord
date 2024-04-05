@@ -61,18 +61,20 @@ const CreateServerModal = () => {
     });
 
     useEffect(() => {
-        (async () => {
-            setCategoriesLoading(true);
-
-            try {
-                const response = await axios.get("/api/categories");
-                setCategories(response.data);
-            } catch {
-                // show error message
-            } finally {
-                setCategoriesLoading(false);
-            }
-        })();
+        if (isModalOpen) {
+            (async () => {
+                setCategoriesLoading(true);
+    
+                try {
+                    const response = await axios.get("/api/categories")
+                    setCategories(response.data);
+                } catch {
+                    // show error message
+                } finally {
+                    setCategoriesLoading(false);
+                }
+            })();
+        }
     }, []);
 
     const calcHeight = (el: any) => {
@@ -95,8 +97,10 @@ const CreateServerModal = () => {
                 categoryId: activeCategory
             });
 
+            // console.log("\n\n\nredirect to:", `/servers/${result.data.id}/${result.data?.channel[0]?.id}`);
+
             form.reset();
-            router.push(`/servers/${result.data.id}`);
+            router.push(`/servers/${result.data.id}/${result.data?.channel[0]?.id}`);
             onClose();
         } catch {
             // show error message
@@ -157,6 +161,7 @@ const CreateServerModal = () => {
                                                 <div className="space-y-3">
                                                     {categories.map((category) => (
                                                         <button
+                                                            key={category.id}
                                                             className="w-full p-3 flex justify-between items-center hover:bg-zinc-700/5 dark:hover:bg-[#404349] border-[0.2px] border-zinc-300 dark:border-[#484d56] rounded-md transition"
                                                             onClick={() => {
                                                                 setActiveCategory(category.id);

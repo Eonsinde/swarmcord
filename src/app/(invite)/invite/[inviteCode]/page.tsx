@@ -19,7 +19,7 @@ const Invite = async ({ params: { inviteCode } }: Props) => {
         return redirect("/");
 
     // check if user already in the server
-    const existingInServer = await db.server.findFirst({
+    const existingServer = await db.server.findFirst({
         where: {
             inviteCode,
             members: {
@@ -27,12 +27,22 @@ const Invite = async ({ params: { inviteCode } }: Props) => {
                     profileId: profile.id
                 }
             }
+        },
+        include: {
+            channels: {
+                where: {
+                    name: "general"
+                },
+                orderBy: {
+                    createdAt: "asc"
+                }
+            }
         }
     });
 
     // if user in server, just redirect to server
-    if (existingInServer)
-        return redirect(`/servers/${existingInServer.id}`);
+    if (existingServer)
+        return redirect(`/servers/${existingServer.id}/${existingServer.channels[0].id}`);
 
     // user not in server, add user to the members of the server    
     const server = await db.server.update({
@@ -47,11 +57,21 @@ const Invite = async ({ params: { inviteCode } }: Props) => {
                     }
                 ]
             }
+        },
+        include: {
+            channels: {
+                where: {
+                    name: "general"
+                },
+                orderBy: {
+                    createdAt: "asc"
+                }
+            }
         }
     });
  
     if (server)
-        return redirect(`/servers/${server.id}`);
+        return redirect(`/servers/${server.id}/${server.channels[0].id}`);
     
     return null;
 }

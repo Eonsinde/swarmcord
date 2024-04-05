@@ -5,12 +5,11 @@ import { icons } from "lucide-react"
 import { useActiveExploreLink } from "@/hooks/use-active-explore-link"
 
 type Props = {
-    id: string
     name?: string
     iconName: string
 }
 
-const ExploreItem = ({ id, name="home", iconName }: Props) => {
+const ExploreItem = ({ name="home", iconName }: Props) => {
     const { activeLink, setActiveLink } = useActiveExploreLink(state => state);
 
     const formattedName = useMemo(() => name === "home" ? "communities" : name, [name]);

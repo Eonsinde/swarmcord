@@ -28,8 +28,8 @@ const ExploreSidebar = ({ categories }: Props) => {
         if (activeLink)
             return router.push(`/explore/?category=${activeLink || category}`);
 
-        setActiveLink("communities" || category);
-        return router.push(`/explore/?category=${activeLink || category}`);
+        setActiveLink(category || "communities");
+        return router.push(`/explore/?category=${category || "communities"}`);
     }, [activeLink, category]);
 
     return (
@@ -37,13 +37,11 @@ const ExploreSidebar = ({ categories }: Props) => {
             <h1 className="text-foreground text-xl p-3 font-bold">Explore</h1>
             <div className="mt-2 px-3">
                 <ExploreItem
-                    id=""
                     iconName="Home"
                 />
                 {categories.map((category) => (
                     <ExploreItem
                         key={category.name}
-                        id={category.id}
                         name={category.name}
                         iconName={iconMap[category.name]}
                     />

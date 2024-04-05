@@ -4,7 +4,6 @@ import { useParams, useRouter } from "next/navigation"
 import { useActiveChannel } from "@/hooks/use-active-channel"
 import { cn } from "@/lib/utils"
 import ActionTooltip from "@/components/action-tooltip"
-import { AvatarFallback } from "@/components/ui/avatar"
 
 type Props = {
     serverId: string
@@ -20,7 +19,7 @@ const NavigationItem = ({ serverId, defaultChannelId, serverName, serverImage }:
 
     const onClick = () => {
         // this function helps navigate to previously active channel under a server or the default channel
-        if (serverId === activeServerId && activeChannelId)
+        if (activeChannelId && serverId === activeServerId)
             return router.push(`/servers/${serverId}/${activeChannelId}`);
         return router.push(`/servers/${serverId}/${defaultChannelId}`);
     }
@@ -36,14 +35,14 @@ const NavigationItem = ({ serverId, defaultChannelId, serverName, serverImage }:
                 onClick={onClick}
             >
                 <div
-                    className={cn(
+                    className={cn(  
                         "bg-primary absolute left-0 w-[4px] rounded-r-full transition-all",
                         params?.serverId !== serverId && "group-hover:h-[20px]",
                         params?.serverId === serverId ? "h-[36px]" : "h-[8px]"
                     )}
                 />
                 <div className={cn(
-                    "relative group h-[48px] w-[48px] flex mx-3 rounded-[24px] group-hover:rounded-[16px] transition-all overflow-hidden",
+                    "relative group h-[48px] w-[48px] flex mx-3 bg-muted rounded-[24px] group-hover:rounded-[16px] transition-all overflow-hidden",
                     params?.serverId === serverId && "bg-primary/10 text-primary rounded-[16px]"
                 )}>
                     {serverImage ? (
@@ -55,7 +54,9 @@ const NavigationItem = ({ serverId, defaultChannelId, serverName, serverImage }:
                             placeholder="empty"
                         />
                     ): (
-                        <AvatarFallback className="">{serverName.split(" ")}</AvatarFallback>
+                        <div className="h-full w-full flex justify-center items-center">
+                            <p className="text-center whitespace-normal">{"enoch is the boy realy wanna be not tise cos i dont have words man".split(" ").map(letter => letter[0])}</p>
+                        </div>
                     )}
                 </div>
             </button>

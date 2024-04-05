@@ -38,10 +38,13 @@ const JoinServer = ({ onBackAction, onCloseModal }: Props) => {
         setIsLoading(true);
 
         try {
-            await axios.post(`/api/servers`, values);
+            const inviteCode = values.inviteLink.slice(values.inviteLink.lastIndexOf("/")+1);
+
+            const response = await axios.patch(`/api/servers/invite/${inviteCode}`, values);
 
             form.reset();
-            router.refresh();
+            router.push(`/servers/${response.data.id}/${response.data.channels[0].id}`);
+            onCloseModal();
         } catch {
             // show error message
         } finally {

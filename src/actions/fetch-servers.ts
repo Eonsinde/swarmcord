@@ -14,9 +14,7 @@ export const fetchServers = async (category: string) => {
             const allServers = await db.server.findMany({
                 include: {
                     members: {
-                        include: {
-                            _count: true
-                        }
+                        include: true
                     }
                 }
             });
@@ -30,11 +28,7 @@ export const fetchServers = async (category: string) => {
             include: {
                 servers: {
                     include: {
-                        members: {
-                            include: {
-                                _count: true
-                            }
-                        }
+                        members: true
                     }
                 }
             }

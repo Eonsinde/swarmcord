@@ -9,7 +9,7 @@ type Props = {
 
 const ExploreServerItem = ({ name, imageUrl, coverUrl, membersCount }: Props) => {
     return (
-        <div className="bg-[#232428] rounded-md overflow-hidden cursor-pointer">
+        <div className="group bg-transparent dark:bg-[#2c2d31] hover:bg-transparent hover:dark:bg-[#232428] border-[1px] border-border rounded-md hover:shadow-md overflow-hidden cursor-pointer hover:-translate-y-1 transition">
             <div className="relative h-40 bg-zinc-200">
                 <Image
                     className="object-cover"
@@ -20,7 +20,7 @@ const ExploreServerItem = ({ name, imageUrl, coverUrl, membersCount }: Props) =>
                 />
             </div>
             <div className="relative p-3">
-                <div className="absolute -top-7 h-12 w-12 flex justify-center items-center bg-[#232428] border-4 border-[#232428] rounded-xl overflow-hidden">
+                <div className="absolute -top-7 h-12 w-12 flex justify-center items-center border-4 border-white dark:border-[#2c2d31] group-hover:border-white group-hover:dark:border-[#232428] rounded-xl overflow-hidden">
                     <Image
                         className="object-cover rounded-md"
                         src={imageUrl}
@@ -29,8 +29,8 @@ const ExploreServerItem = ({ name, imageUrl, coverUrl, membersCount }: Props) =>
                         placeholder="empty"
                     />
                 </div>
-                <p className="mt-4 text-foreground">{name}</p>
-                <small className="text-muted-foreground">
+                <p className="mt-4 text-foreground capitalize">{name}</p>
+                <small className="text-muted-foreground line-clamp-4">
                     Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dignissimos ad nostrum magni molestiae voluptatibus consequatur eos enim expedita velit tenetur, natus explicabo ratione recusandae obcaecati maxime debitis sed, tempore assumenda.
                 </small>
             </div>
