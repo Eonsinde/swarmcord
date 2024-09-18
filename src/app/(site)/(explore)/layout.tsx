@@ -4,7 +4,7 @@ import { db } from "@/lib/db"
 import { currentProfile } from "@/lib/current-profile"
 import ExploreSidebar from "@/components/explore/explore-sidebar"
 
-const ExploreLayout =  async ({
+const ExploreLayout = async ({
     children
 }: {
     children: React.ReactNode

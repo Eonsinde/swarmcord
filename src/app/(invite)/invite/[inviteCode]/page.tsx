@@ -10,6 +10,7 @@ type Props = {
 }
 
 const Invite = async ({ params: { inviteCode } }: Props) => {
+    // TODO: make this a client component, add a loading state for better UX
     const profile = await currentProfile();
 
     if (!profile)
@@ -73,6 +74,8 @@ const Invite = async ({ params: { inviteCode } }: Props) => {
     if (server)
         return redirect(`/servers/${server.id}/${server.channels[0].id}`);
     
+
+    // TODO: render loading screen here instead of a blank page
     return null;
 }
  

@@ -1,9 +1,9 @@
 "use client"
 import { useEffect } from "react"
+import { useRouter, useSearchParams } from "next/navigation"
 import { Category } from "@prisma/client"
 import { useActiveExploreLink } from "@/hooks/use-active-explore-link"
 import ExploreItem from "./explore-item"
-import { useRouter, useSearchParams } from "next/navigation"
 
 type Props = {
     categories: Category []
@@ -21,8 +21,11 @@ const iconMap = {
 const ExploreSidebar = ({ categories }: Props) => {
     const router = useRouter();
     const searchParams = useSearchParams();
-    const category = searchParams.get("category");
+    const category = searchParams?.get("category");
     const { activeLink, setActiveLink } = useActiveExploreLink(state => state);
+
+    // TODO: convert this component into a server comp and fetch categories here
+    // then, create a new component to render categories
 
     useEffect(() => {
         if (activeLink)

@@ -4,7 +4,7 @@ import Image from "next/image"
 import { twMerge } from "tailwind-merge"
 import { useDropzone, type DropzoneOptions } from "react-dropzone"
 import { useEdgeStore } from "../lib/edgestore"
-import { X, LucideUploadCloud, Loader2 } from "lucide-react"
+import { X, LucideUploadCloud, Loader2, FileIcon } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 const variants = {
@@ -63,17 +63,17 @@ const FileUpload = forwardRef<HTMLInputElement, Props>(({
     const [isUploading, setIsUploading] = useState<boolean>(false);
     const [isUploadError, setIsUploadError] = useState<boolean>(false);
 
-    const { imageUrl, fileType } = useMemo(() => {
+    const { fileUrl, fileType } = useMemo(() => {
         if (typeof value === "string") {
             const fileType = value?.split(".").pop();
             // in case a url is passed in, use it to display the image
-            return { imageUrl: value, fileType  };
+            return { fileUrl: value, fileType  };
         } else if (value) {
             // in case a file is passed in, create a base64 url to display the image
-            return { imageUrl: URL.createObjectURL(value), fileType: null };
+            return { fileUrl: URL.createObjectURL(value), fileType: null };
         }
 
-        return  { imageUrl: null, fileType: null  };
+        return  { fileUrl: null, fileType: null  };
     }, [value]);
 
     // dropzone configuration
@@ -86,7 +86,7 @@ const FileUpload = forwardRef<HTMLInputElement, Props>(({
         isDragAccept,
         isDragReject,
     } = useDropzone({
-        accept: { 'image/*': [] },
+        accept: { "image/*": [] },
         multiple: false,
         disabled: disabled || isUploading,
         onDrop: async (acceptedFiles) => {
@@ -108,14 +108,14 @@ const FileUpload = forwardRef<HTMLInputElement, Props>(({
                 variants.base,
                 isFocused && variants.active,
                 disabled && variants.disabled,
-                imageUrl && variants.image,
+                fileUrl && variants.image,
                 (isDragReject ?? fileRejections[0]) && variants.reject,
                 isDragAccept && variants.accept,
                 className
             ).trim(),
         [
             isFocused,
-            imageUrl,
+            fileUrl,
             fileRejections,
             isDragAccept,
             isDragReject,
@@ -162,6 +162,7 @@ const FileUpload = forwardRef<HTMLInputElement, Props>(({
 
                 onChange(edgeStoreResponse.url);
             } catch(error){
+                console.log("[file-upload]:", error);
                 setIsUploadError(true);
             } finally {
                 setIsUploading(false);
@@ -170,7 +171,7 @@ const FileUpload = forwardRef<HTMLInputElement, Props>(({
         }
     }, [file, endpoint]);
 
-    if (imageUrl && fileType !== "pdf")
+    if (fileUrl && fileType !== "pdf")
         return (
             <div className={cn(
                 "flex justify-center items-center",
@@ -179,7 +180,7 @@ const FileUpload = forwardRef<HTMLInputElement, Props>(({
                 <div className="relative h-20 w-20">
                     <Image
                         className="object-cover rounded-full"
-                        src={imageUrl}
+                        src={fileUrl}
                         fill
                         alt={"uploaded image"}
                     />
@@ -194,6 +195,38 @@ const FileUpload = forwardRef<HTMLInputElement, Props>(({
                         <X className="h-4 w-4" />
                     </button>
                 </div>
+            </div>
+        )
+
+    if (fileUrl && fileType === "pdf")
+        return (
+            <div className={cn(
+                "relative flex justify-center items-center p-2 rounded-sm overflow-hidden",
+                disabled && "opacity-50"
+            )}>
+                <div className="flex-1 flex items-center overflow-hidden">
+                    <FileIcon
+                        className="h-10 w-10 fill-indigo-200 stroke-indigo-400"
+                    />
+                    <a
+                        className="ml-2 text-left text-sm text-indigo-500 dark:text-indigo-400 hover:underline"
+                        href={fileUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        {fileUrl}
+                    </a>
+                </div>
+                <button
+                    className="bg-indigo-600 hover:bg-indigo-600/90 disabled:hover:bg-indigo-600 text-white p-1 rounded-full"
+                    onClick={() => {
+                        setFile(undefined);
+                        onChange("")
+                    }}
+                    disabled={disabled}
+                >
+                    <X className="h-4 w-4" />
+                </button>
             </div>
         )
 

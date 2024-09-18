@@ -11,7 +11,7 @@ const SocketIndicator = () => {
                 className="bg-yellow-600 text-white border-none"
                 variant="outline"
             >
-                Fallback: Polling every 1s
+                Fallback<span className="hidden md:block">: Polling every 1s</span>
             </Badge>
         )
     
@@ -20,7 +20,7 @@ const SocketIndicator = () => {
             className="bg-emerald-600 text-white border-none"
             variant="outline"
         >
-            Live: Real-time updates
+            Live<span className="hidden md:block">: Real-time updates</span>
         </Badge>
     )
 }

@@ -2,14 +2,13 @@ import { Suspense } from "react"
 import MobileToggleExplore from "@/components/mobile-toggle-explore"
 import ExploreServerItem from "@/components/explore/explore-server-item"
 import { fetchServers } from "@/actions/fetch-servers"
+import ExploreServers from "@/components/explore/explore-servers"
 
-const ExplorePage = async ({
+const ExplorePage = ({
     searchParams
 }: {
     searchParams: { category: string }
 }) => {
-    const servers = await fetchServers(searchParams.category);
-
     return (
         <div>
             <header className="md:hidden flex items-center h-12 px-3 md:px-5">
@@ -25,20 +24,12 @@ const ExplorePage = async ({
                         fallback={
                             <>
                                 {new Array(10).fill(1).map((item) => (
-                                    <div className="h-[331] bg-[#2c2d31] hover:bg-[#232428] rounded-md overflow-hidden cursor-pointer hover:-translate-y-2 transition" />
+                                    <div className="h-[331px] bg-[#2c2d31] hover:bg-[#232428] rounded-md overflow-hidden cursor-pointer hover:-translate-y-1 transition" />
                                 ))}
                             </>
                         }
                     >
-                        {servers?.map((server) => (
-                            <ExploreServerItem
-                                key={server.id}
-                                name={server.name}
-                                imageUrl={server.imageUrl || ""}
-                                coverUrl={server.coverUrl || ""}
-                                membersCount={server?.members?.length}
-                            />
-                        ))}
+                        <ExploreServers categoryId={searchParams.category} />
                     </Suspense>
                 </section>
             </main>
