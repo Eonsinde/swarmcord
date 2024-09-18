@@ -8,6 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { Plus, Smile } from "lucide-react"
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
 
 const formSchema = z.object({
     content: z.string().min(1)
@@ -65,8 +66,16 @@ const ChatInput = ({
                                     >
                                         <Plus className="text-white dark:text-[#313338]" />
                                     </button>
-                                    <Input
+                                    {/* <Input
                                         className="flex-1 bg-transparent border-none border-0 focus-visible:ring-0 focus-visible:ring-offset-0 text-zinc-600 dark:text-zinc-200"
+                                        disabled={form.formState.isLoading}
+                                        placeholder={`Message ${type === "conversation" ? name : "#"+name }`}
+                                        {...field}
+                                    /> */}
+                                    <Textarea
+                                        className="flex-1 bg-transparent border-none border-0 focus-visible:ring-0 focus-visible:ring-offset-0 text-zinc-600 dark:text-zinc-200 resize-none"
+                                        rows={1}
+                                        maxRows={4}
                                         disabled={form.formState.isLoading}
                                         placeholder={`Message ${type === "conversation" ? name : "#"+name }`}
                                         {...field}

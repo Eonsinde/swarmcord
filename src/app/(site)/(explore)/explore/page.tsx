@@ -23,8 +23,11 @@ const ExplorePage = ({
                     <Suspense
                         fallback={
                             <>
-                                {new Array(10).fill(1).map((item) => (
-                                    <div className="h-[331px] bg-[#2c2d31] hover:bg-[#232428] rounded-md overflow-hidden cursor-pointer hover:-translate-y-1 transition" />
+                                {new Array(10).fill(1).map((_, index) => (
+                                    <div
+                                        key={index}
+                                        className="h-[331px] bg-[#2c2d31] hover:bg-[#232428] rounded-md overflow-hidden cursor-pointer hover:-translate-y-1 transition"
+                                    />
                                 ))}
                             </>
                         }
