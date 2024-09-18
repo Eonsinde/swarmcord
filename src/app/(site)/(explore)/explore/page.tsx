@@ -1,7 +1,5 @@
 import { Suspense } from "react"
 import MobileToggleExplore from "@/components/mobile-toggle-explore"
-import ExploreServerItem from "@/components/explore/explore-server-item"
-import { fetchServers } from "@/actions/fetch-servers"
 import ExploreServers from "@/components/explore/explore-servers"
 
 const ExplorePage = ({
