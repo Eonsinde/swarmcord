@@ -1,17 +1,54 @@
 import { create } from "zustand"
 
-interface ModalStore {
-    activeServerId: string
-    activeChannelId: string
-    setActiveServerId: (id: string) => void
-    setActiveChannelId: (id: string) => void
-    setActiveServerChannelId: (severId: string, channelId: string) => void
+type State = {
+    servers: {
+        activeServerId: string
+        activeChannelId: string
+    } []
 }
 
-export const useActiveChannel = create<ModalStore>((set) => ({
-    activeServerId: "",
-    activeChannelId: "",
-    setActiveServerId: (id) => set({ activeServerId: id }),
-    setActiveChannelId: (id) => set({ activeChannelId: id }),
-    setActiveServerChannelId: (serverId, channelId) => set({ activeServerId: serverId, activeChannelId: channelId }),
+type Payload = {
+    serverId: string
+    channelId: string
+}
+
+type Actions = {
+    setActiveServerChannelId: (payload: Payload) => void
+}
+
+const reducer = (state: State, payload: Payload) => {
+    const servers = state.servers;
+
+    if (servers.length === 0) // if no servers exist yet
+        return {
+            servers: [{
+                activeServerId: payload.serverId,
+                activeChannelId: payload.channelId
+            }]
+        };
+
+    const foundServer = servers.find((server) => server.activeServerId === payload.serverId);
+
+    if (foundServer) // update existing details
+        return {
+            servers: servers.map((server) => server.activeServerId === payload.serverId ? { ...server, activeChannelId: payload.channelId } : server)
+        }
+
+    // append new detail if it wasn't existing before
+    return {
+        servers: [
+            ...servers,
+            {
+                activeServerId: payload.serverId,
+                activeChannelId: payload.channelId
+            }
+        ]
+    }
+}
+
+export const useActiveChannel = create<State & Actions>((set) => ({
+    servers: [],
+    setActiveServerChannelId: (payload: Payload) => {
+        set((state) => reducer(state, payload))
+    }
 }));

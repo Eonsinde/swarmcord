@@ -29,7 +29,11 @@ const ServerChannel = ({ channel, server, role }: Props) => {
 
     const handleClick = () => {
         router.push(`/servers/${params?.serverId}/${channel.id}`);
-        setActiveServerChannelId(server.id, channel.id);
+        
+        setActiveServerChannelId({
+            serverId: server.id,
+            channelId: channel.id
+        });
     }
 
     const handleAction = (e: React.MouseEvent, modalType: ModalType) => {

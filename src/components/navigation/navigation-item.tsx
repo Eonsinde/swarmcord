@@ -1,6 +1,7 @@
 "use client"
 import Image from "next/image"
 import { useParams, useRouter } from "next/navigation"
+import { useShallow } from 'zustand/react/shallow'
 import { useActiveChannel } from "@/hooks/use-active-channel"
 import { cn } from "@/lib/utils"
 import ActionTooltip from "@/components/action-tooltip"
@@ -15,12 +16,12 @@ type Props = {
 const NavigationItem = ({ serverId, defaultChannelId, serverName, serverImage }: Props) => {
     const params = useParams<{ serverId: string }>();
     const router = useRouter();
-    const { activeServerId, activeChannelId } = useActiveChannel(state => state);
+    const activeServerChannel = useActiveChannel(useShallow(state => state.servers.find(server => server.activeServerId === serverId)));
 
     const onClick = () => {
         // this function helps navigate to previously active channel under a server or the default channel
-        if (activeChannelId && serverId === activeServerId)
-            return router.push(`/servers/${serverId}/${activeChannelId}`);
+        if (activeServerChannel?.activeChannelId && serverId === activeServerChannel?.activeServerId)
+            return router.push(`/servers/${serverId}/${activeServerChannel?.activeChannelId}`);
         return router.push(`/servers/${serverId}/${defaultChannelId}`);
     }
 
@@ -55,7 +56,9 @@ const NavigationItem = ({ serverId, defaultChannelId, serverName, serverImage }:
                         />
                     ): (
                         <div className="h-full w-full flex justify-center items-center">
-                            <p className="text-center whitespace-normal">{"enoch is the boy realy wanna be not tise cos i dont have words man".split(" ").map(letter => letter[0])}</p>
+                            <p className="text-center whitespace-normal">
+                                {serverName.split(" ").map(letter => letter[0])}
+                            </p>
                         </div>
                     )}
                 </div>

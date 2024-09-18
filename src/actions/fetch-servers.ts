@@ -13,7 +13,15 @@ export const fetchServers = async (category: string) => {
             // return all servers if no category is providee
             const allServers = await db.server.findMany({
                 include: {
-                    members: true
+                    members: true,
+                    channels: {
+                        where: {
+                            name: "general"
+                        },
+                        orderBy: {
+                            createdAt: "asc"
+                        }
+                    }
                 }
             });
             return allServers;
@@ -26,7 +34,15 @@ export const fetchServers = async (category: string) => {
             include: {
                 servers: {
                     include: {
-                        members: true
+                        members: true,
+                        channels: {
+                            where: {
+                                name: "general"
+                            },
+                            orderBy: {
+                                createdAt: "asc"
+                            }
+                        }
                     }
                 }
             }

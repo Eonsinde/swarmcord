@@ -14,6 +14,8 @@ const ExploreServers = async ({ categoryId }: Props) => {
                 <ExploreServerItem
                     key={server.id}
                     name={server.name}
+                    serverId={server.id}
+                    defaultChannelId={server.channels[0].id}
                     imageUrl={server.imageUrl || ""}
                     coverUrl={server.coverUrl || ""}
                     membersCount={server?.members?.length}

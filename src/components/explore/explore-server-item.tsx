@@ -1,15 +1,41 @@
+"use client"
+import { useActiveChannel } from "@/hooks/use-active-channel"
 import Image from "next/image"
+import { useRouter } from "next/navigation"
+import { useShallow } from "zustand/react/shallow"
 
 type Props = {
     name: string
     imageUrl: string
     coverUrl: string
+    serverId: string
+    defaultChannelId: string
     membersCount: number
 }
 
-const ExploreServerItem = ({ name, imageUrl, coverUrl, membersCount }: Props) => {
+const ExploreServerItem = ({
+    name,
+    imageUrl,
+    coverUrl,
+    serverId,
+    defaultChannelId,
+    membersCount
+}: Props) => {
+    const router = useRouter();
+    const activeServerChannel = useActiveChannel(useShallow(state => state.servers.find(server => server.activeServerId === serverId)));
+
+    const onClick = () => {
+        // this function helps navigate to previously active channel under a server or the default channel
+        if (activeServerChannel?.activeChannelId && serverId === activeServerChannel?.activeServerId)
+            return router.push(`/servers/${serverId}/${activeServerChannel?.activeChannelId}`);
+        return router.push(`/servers/${serverId}/${defaultChannelId}`);
+    }
+
     return (
-        <div className="group bg-transparent dark:bg-[#2c2d31] hover:bg-transparent hover:dark:bg-[#232428] border-[1px] border-border rounded-md hover:shadow-md overflow-hidden cursor-pointer hover:-translate-y-1 transition">
+        <div
+            className="group bg-transparent dark:bg-[#2c2d31] hover:bg-transparent hover:dark:bg-[#232428] border-[1px] border-border rounded-md hover:shadow-md overflow-hidden cursor-pointer hover:-translate-y-1 transition"
+            onClick={onClick}
+        >
             <div className="relative h-40 bg-zinc-200">
                 <Image
                     className="object-cover"

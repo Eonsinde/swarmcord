@@ -202,7 +202,7 @@ const CreateServerModal = () => {
                     in={activePage === "createServer"} 
                     unmountOnExit
                     onEnter={calcHeight}
-                    timeout={500} 
+                    timeout={500}
                 >
                     <div className="create-server-menu w-full">
                         <DialogHeader className=" pt-5 px-5">
@@ -286,7 +286,7 @@ const CreateServerModal = () => {
                     in={activePage === "joinServer"} 
                     unmountOnExit
                     onEnter={calcHeight}
-                    timeout={500} 
+                    timeout={500}
                 >
                     <div className="create-server-menu w-full">
                         <DialogHeader className="pt-5 pb-2 px-5">
