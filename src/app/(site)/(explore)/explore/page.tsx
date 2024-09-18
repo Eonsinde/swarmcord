@@ -26,7 +26,7 @@ const ExplorePage = ({
                                 {new Array(10).fill(1).map((_, index) => (
                                     <div
                                         key={index}
-                                        className="h-[331px] bg-[#2c2d31] hover:bg-[#232428] rounded-md overflow-hidden cursor-pointer hover:-translate-y-1 transition"
+                                        className="h-[331px] bg-zinc-300/40 hover:bg-zinc-300/70 dark:bg-[#2c2d31] dark:hover:bg-[#232428] rounded-md overflow-hidden cursor-pointer hover:-translate-y-1 transition"
                                     />
                                 ))}
                             </>

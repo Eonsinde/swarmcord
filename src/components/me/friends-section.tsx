@@ -29,7 +29,7 @@ const FriendsSection = ({ friends }: Props) => {
             </header>
             <FriendsBlank />
             <ScrollArea className="flex-1 w-full">
-
+                
             </ScrollArea>
         </section>
     );

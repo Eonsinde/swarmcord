@@ -13,7 +13,7 @@ const variants = cva(
         variants: {
             variant: {
                 directMessages: "group-hover:bg-purple-500",
-                explore: "group-hover:bg-emerald-500",
+                explore: "group-hover:bg-emerald-500"
             }
         },
         defaultVariants: {
@@ -28,12 +28,13 @@ const NavigationLink = ({ variant="directMessages" }: Props) => {
     const router = useRouter();
     const pathname = usePathname();
 
-    const trailingString = useMemo(() => pathname.slice(pathname.lastIndexOf("/")+1), [pathname]);
+    const trailingString = useMemo(() => pathname?.slice(pathname?.lastIndexOf("/")+1), [pathname]);
 
     const isDMLink = useMemo(() => (trailingString === "me" || trailingString === "rocket"), [pathname]);
     const isExploreLink = useMemo(() => (trailingString === "explore"), []);
 
-    // console.log("trailingString", trailingString, pathname);
+
+    console.log("trailingString", trailingString, pathname, isExploreLink);
 
     const label = useMemo(() => {
         if (variant === "directMessages")
@@ -66,22 +67,24 @@ const NavigationLink = ({ variant="directMessages" }: Props) => {
                     <div
                         className={cn(
                             "bg-primary absolute left-0 w-[4px] rounded-r-full transition-all",
-                            !isDMLink ? "group-hover:h-[20px]" : !isExploreLink ? "group-hover:h-[20px]" : "",
-                            isDMLink ? ((variant === "directMessages") ? "h-[36px]" : "") : ((variant === "explore") ? "h-[36px]" : "")
+                            isDMLink && (variant === "directMessages") ? "h-[36px] group-hover:h-[36px]" : "",
+                            isExploreLink && (variant === "explore") ? "h-[36px] group-hover:h-[36px]" : "",
+                            !isDMLink && !isExploreLink && "group-hover:h-[20px]"
                         )}
                     />
                     <div
                         className={cn(
                             variants({ variant }),
-                            isDMLink ? (variant === "directMessages" ? "bg-purple-500" : "") : (variant === "explore" ? "bg-emerald-500" : ""),
-                            isDMLink ? (variant === "directMessages" ? "rounded-[16px]" : "") : (variant === "explore" ? "rounded-[16px]" : "")
+                            (isDMLink && variant === "directMessages") && "bg-purple-500 rounded-[16px]",
+                            (isExploreLink && variant === "explore") && "bg-emerald-500 rounded-[16px]",
+                            // isDMLink ? (variant === "directMessages" ? "bg-purple-500 rounded-[16px]" : "") : (isExploreLink && variant === "explore" ? "bg-emerald-500 rounded-[16px]" : ""),
                         )}
                     >
                         {variant === "directMessages" && (
                             <SwarmSvg
                                 className={cn(
                                     "h-[25px] w-[25px] fill-foreground group-hover:fill-white dark:group-hover:fill-foreground",
-                                    isDMLink ? variant === "directMessages" ? "fill-white dark:fill-foreground" : "" : ""
+                                    isDMLink && !isExploreLink ? variant === "directMessages" ? "fill-white dark:fill-foreground" : "" : ""
                                 )}
                             />
                         )}
@@ -89,7 +92,7 @@ const NavigationLink = ({ variant="directMessages" }: Props) => {
                             <ExploreSvg
                                 className={cn(
                                     "h-[25px] w-[25px] fill-foreground group-hover:fill-white dark:group-hover:fill-foreground",
-                                    isDMLink ? variant === "explore" ? "fill-white dark:fill-foreground" : "" : ""
+                                    !isDMLink && isExploreLink ? (variant === "explore" ? "fill-white dark:fill-foreground" : "") : ""
                                 )}
                             />
                         )}

@@ -66,12 +66,6 @@ const ChatInput = ({
                                     >
                                         <Plus className="text-white dark:text-[#313338]" />
                                     </button>
-                                    {/* <Input
-                                        className="flex-1 bg-transparent border-none border-0 focus-visible:ring-0 focus-visible:ring-offset-0 text-zinc-600 dark:text-zinc-200"
-                                        disabled={form.formState.isLoading}
-                                        placeholder={`Message ${type === "conversation" ? name : "#"+name }`}
-                                        {...field}
-                                    /> */}
                                     <Textarea
                                         className="flex-1 bg-transparent border-none border-0 focus-visible:ring-0 focus-visible:ring-offset-0 text-zinc-600 dark:text-zinc-200 resize-none"
                                         rows={1}

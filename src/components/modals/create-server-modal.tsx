@@ -99,8 +99,8 @@ const CreateServerModal = () => {
 
             // console.log("\n\n\nredirect to:", `/servers/${result.data.id}/${result.data?.channel[0]?.id}`);
 
-            form.reset();
             router.push(`/servers/${result.data.id}/${result.data?.channel[0]?.id}`);
+            form.reset();
             onClose();
         } catch {
             // show error message

@@ -72,9 +72,6 @@ export async function POST(req: Request) {
         if (!name)
             return new NextResponse("Server name is missing", { status: 400 });
 
-        if (!categoryId)
-            return new NextResponse("Category ID is missing", { status: 400 });
-
         const defaultCategory = await db.category.findFirst({
             where: {
                 name: "local community"
