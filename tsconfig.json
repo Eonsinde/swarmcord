@@ -25,6 +25,7 @@
       "@/hooks/*": ["./src/hooks/*"],
       "@/providers/*": ["./src/providers/*"],
       "@/actions/*": ["./src/actions/*"],
+      "@/config/*": ["./src/config/*"],
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/(site)/servers/[serverId]", "src/components/navigation/navigation-link.tss"],

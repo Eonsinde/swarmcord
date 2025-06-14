@@ -1,4 +1,3 @@
-import axios from "axios"
 import { db } from "@/lib/db"
 import { currentProfile } from "@/lib/current-profile"
 

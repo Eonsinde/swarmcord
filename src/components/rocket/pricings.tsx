@@ -1,5 +1,6 @@
 "use client"
 import { useState } from "react"
+import { PLANS } from "@/config/payment-plans"
 import { CSSTransition } from "react-transition-group"
 import { ArrowUpFromLine, Image, Server, Tv } from "lucide-react"
 import { Button } from "../ui/button"
@@ -31,6 +32,7 @@ const Pricings = ({ pricings }: Props) => {
             >
                 {activePage}
             </Button>
+            
             <CSSTransition
                 classNames="pricing-menu-primary"
                 in={activePage === "turbo"} 
