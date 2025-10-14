@@ -22,8 +22,7 @@ import {
     FormControl,
     FormField,
     FormItem,
-    FormLabel,
-    FormMessage
+    FormLabel
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
@@ -97,13 +96,14 @@ const CreateServerModal = () => {
                 categoryId: activeCategory
             });
 
-            // console.log("\n\n\nredirect to:", `/servers/${result.data.id}/${result.data?.channel[0]?.id}`);
-
-            router.push(`/servers/${result.data.id}/${result.data?.channel[0]?.id}`);
+            console.log("\n\n\nredirect to:", `/servers/${result.data.id}/${result.data?.channel[0]?.id}`);
             form.reset();
             onClose();
-        } catch {
+
+            router.push(`/servers/${result.data.id}/${result.data?.channel[0]?.id}`);
+        } catch(error) {
             // show error message
+            // console.error("\n\n\nCreateServerModal::", error);
         } finally {
             setIsLoading(false);
         }
@@ -115,10 +115,8 @@ const CreateServerModal = () => {
             onOpenChange={handleClose}
         >
             <DialogContent
-                className="h-full md:h-auto max-w-full md:max-w-[450px] p-0 transition-height duration-500 overflow-hidden"
-                style={{
-                    height: menuHeight
-                }}
+                className="h-auto w-11/12 md:max-w-[450px] p-0 rounded-lg transition-height duration-500 overflow-hidden"
+                style={{ height: menuHeight }}
             >
                 <CSSTransition
                     classNames="create-server-menu-primary"
@@ -233,7 +231,6 @@ const CreateServerModal = () => {
                                                         }}
                                                     />
                                                 </FormControl>
-                                                <FormMessage />
                                             </FormItem>
                                         )}
                                     />
@@ -253,7 +250,6 @@ const CreateServerModal = () => {
                                                         placeholder="Enter server name"
                                                     />
                                                 </FormControl>
-                                                <FormMessage />
                                             </FormItem>
                                         )}
                                     />

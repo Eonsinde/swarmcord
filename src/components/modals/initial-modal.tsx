@@ -288,6 +288,7 @@ const InitialModal = () => {
                         </DialogHeader>
                         <JoinServer
                             onBackAction={() => setActivePage("categories")}
+                            onCloseModal={() => {}}
                         />
                     </div>
                 </CSSTransition>

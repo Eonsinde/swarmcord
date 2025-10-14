@@ -121,7 +121,29 @@ body,
 }
 
 /* for CSS transition for pricings */
-.pricings-menu-primary-enter {
+.pricing-menu-enter {
+  opacity: 0;
+  z-index: 10; /* New card starts behind but will transition to front */
+}
+
+.pricing-menu-enter-active {
+  opacity: 1;
+  z-index: 20; /* New card comes to front */
+  transition: opacity 500ms ease-in-out;
+}
+
+.pricing-menu-exit {
+  opacity: 1;
+  z-index: 20; /* Old card starts in front */
+}
+
+.pricing-menu-exit-active {
+  opacity: 0;
+  z-index: 10; /* Old card animates behind */
+  transition: opacity 500ms ease-in-out;
+}
+
+/* .pricings-menu-primary-enter {
   position: absolute;
   transform: scale(0.75) translateY(10px) translateZ(10px) perspective(200px);
 }
@@ -145,4 +167,4 @@ body,
 .pricings-menu-secondary-exit-active {
   transform: scale(0.75) translateY(10px) translateZ(20px) perspective(200px);
   transition: all 500ms ease;
-}
+} */

@@ -2,10 +2,10 @@ import type { Metadata } from "next"
 import { Open_Sans, Archivo_Black } from "next/font/google"
 import { ClerkProvider } from "@clerk/nextjs"
 import { EdgeStoreProvider } from "@/lib/edgestore"
-import "./globals.css"
 import ThemeProvider from "@/providers/ThemeProvider"
 import { ModalProvider } from "@/providers/ModalProvider"
 import SocketProvider from "@/providers/SocketProvider"
+import "./globals.css"
 
 const font = Open_Sans({ subsets: ["latin"] });
 

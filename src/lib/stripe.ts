@@ -17,6 +17,7 @@ export const stripe = new Stripe(
 export async function getUserSubscriptionPlan() {
     const profile = await currentProfile();
 
+    // check to sse if a user is authenticated
     if (!profile) {
         return {
             ...PLANS[0],
@@ -33,6 +34,7 @@ export async function getUserSubscriptionPlan() {
         profile.stripeCurrentPeriodEnd.getTime() + 86_400_000 > Date.now()
     );
 
+    // use process.env.NODE_ENV to dynamically select priceIds
     const plan = isSubscribed
         ? PLANS.find((plan) => plan.pricing.priceIds.test === profile.stripePriceId)
         : null

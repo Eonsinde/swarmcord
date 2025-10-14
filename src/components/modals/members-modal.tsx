@@ -110,16 +110,16 @@ const MembersModal = () => {
                         >
                             <div className="flex items-center gap-x-2">
                                 <UserAvatar
-                                    src={member.profile.imageUrl}
-                                    initials={member.profile.name[0]}
+                                    src={member?.profile?.imageUrl}
+                                    initials={member?.profile?.name[0]}
                                 />
                                 <div className="flex flex-col gap-y-1">
                                     <div className="flex items-center gap-x-1 text-xs font-semibold capitalize">
-                                        {member.profile.name}
+                                        {member?.profile?.name}
                                         {roleIconMap[member.role]}
                                     </div>
                                     <p className="text-xs text-muted-foreground">
-                                        {member.profile.email}
+                                        {member?.profile?.email}
                                     </p>
                                 </div>
                             </div>

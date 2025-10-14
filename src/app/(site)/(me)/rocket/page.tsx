@@ -23,8 +23,8 @@ const RocketPage = () => {
                     </p>
                 </div>
             </header>
-            <main className="relative">
-                <CoverSvg className="absolute top-0 right-0 z-0" />
+            <main className="relative overflow-hidden">
+                <CoverSvg className="absolute -top-3 -right-3 z-0" />
                 <div className="z-10 w-10/12 py-14 mx-auto space-y-6">
                     <h1 className="w-6/12 mx-auto font-archivo text-5xl text-center text-foreground">Accelerate your fun with Rocket</h1>
                     <Pricings />

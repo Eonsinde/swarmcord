@@ -75,7 +75,6 @@ const JoinServer = ({ onBackAction, onCloseModal }: Props) => {
                                         placeholder="https://swarcord.vercel.app/invite/2a503024-90ef-32cd-54af-0ac0ba43f345"
                                     />
                                 </FormControl>
-                                <FormMessage />
                             </FormItem>
                         )}
                     />
