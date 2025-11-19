@@ -1,11 +1,13 @@
 "use client"
 import { useEffect } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
-import { Category } from "@prisma/client"
+import { Category, Profile } from "@prisma/client"
 import { useActiveExploreLink } from "@/hooks/use-active-explore-link"
+import NavigationFooter from "@/components/navigation/navigation-footer"
 import ExploreItem from "./explore-item"
 
 type Props = {
+    profile?: Profile
     categories: Category []
 }
 
@@ -18,7 +20,7 @@ const iconMap = {
     ["study group"]: "Book"
 }
 
-const ExploreSidebar = ({ categories }: Props) => {
+const ExploreSidebar = ({ profile, categories }: Props) => {
     const router = useRouter();
     const searchParams = useSearchParams();
     const category = searchParams?.get("category");
@@ -38,7 +40,7 @@ const ExploreSidebar = ({ categories }: Props) => {
     return (
         <div className="h-full w-full flex flex-col bg-[#F2F3F5] dark:bg-[#2B2C31]">
             <h1 className="text-foreground text-xl p-3 font-bold">Explore</h1>
-            <div className="mt-2 px-3">
+            <div className="flex-1 mt-2 px-3">
                 <ExploreItem
                     iconName="Home"
                 />
@@ -50,6 +52,7 @@ const ExploreSidebar = ({ categories }: Props) => {
                     />
                 ))}
             </div>
+            <NavigationFooter profile={profile} />
         </div>
     );
 }

@@ -6,7 +6,7 @@ import {
 } from "@/components/ui/tooltip"
 
 type Props = {
-    label: string
+    label: string | React.ReactNode
     children: React.ReactNode
     side?: "top" | "right" | "bottom" | "left"
     align?: "start" | "center" | "end"
@@ -28,9 +28,13 @@ const ActionTooltip = ({
                     side={side}
                     align={align}
                 >
+                    {typeof label === "string"
+                    ?
                     <p className="font-semibold text-sm capitalize">
                         {label.toLowerCase()}
                     </p>
+                    :
+                    label}
                 </TooltipContent>
             </Tooltip>
         </TooltipProvider>

@@ -12,7 +12,8 @@ export type ModalType =
     "createChannel" |
     "editChannel"   |
     "deleteChannel" |
-    "messageFile";
+    "messageFile"   |
+    "deleteAccount";
 
 // type ModalData = {
 //     server?: Server

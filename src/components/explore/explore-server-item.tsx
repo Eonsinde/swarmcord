@@ -36,10 +36,10 @@ const ExploreServerItem = ({
             className="group bg-transparent dark:bg-[#2c2d31] hover:bg-transparent hover:dark:bg-[#232428] border-[1px] border-border rounded-md hover:shadow-md overflow-hidden cursor-pointer hover:-translate-y-1 transition"
             onClick={onClick}
         >
-            <div className="relative h-40 bg-zinc-200">
+            <div className="relative h-40 bg-[#535964]">
                 <Image
                     className="object-cover"
-                    src={coverUrl}
+                    src={coverUrl || ""}
                     fill
                     alt={`${name} cover`}
                     placeholder="empty"
@@ -49,7 +49,7 @@ const ExploreServerItem = ({
                 <div className="absolute -top-7 h-12 w-12 flex justify-center items-center border-4 border-white dark:border-[#2c2d31] group-hover:border-white group-hover:dark:border-[#232428] rounded-xl overflow-hidden">
                     <Image
                         className="object-cover rounded-md"
-                        src={imageUrl}
+                        src={imageUrl || ""}
                         fill
                         alt={`${name} dp`}
                         placeholder="empty"

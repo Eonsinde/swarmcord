@@ -5,6 +5,7 @@ import { EdgeStoreProvider } from "@/lib/edgestore"
 import ThemeProvider from "@/providers/ThemeProvider"
 import { ModalProvider } from "@/providers/ModalProvider"
 import SocketProvider from "@/providers/SocketProvider"
+import { Toaster } from "@/components/ui/sonner"
 import "./globals.css"
 
 const font = Open_Sans({ subsets: ["latin"] });
@@ -44,6 +45,7 @@ export default function RootLayout({
               >
                 <ModalProvider />
                 {children}
+                <Toaster />
               </ThemeProvider>
             </SocketProvider>
           </EdgeStoreProvider>

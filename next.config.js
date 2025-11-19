@@ -32,7 +32,8 @@ const nextConfig = {
             "uploadthing.com",
             "utfs.io",
             "uploadthing-prod-sea1.s3.us-west-2.amazonaws.com",
-            "files.edgestore.dev"
+            "files.edgestore.dev",
+            "img.clerk.com"
         ]
     }
 }

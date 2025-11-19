@@ -33,7 +33,7 @@ const ServerHeader = ({ server, role }: Props) => {
                     <ChevronDown className="h-5 w-5 ml-2" />
                 </button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-56 text-xs font-medium space-y-[2px]">
+            <DropdownMenuContent className="w-[280px] text-xs font-medium space-y-[2px]">
                 <DropdownMenuItem
                     className="hover:bg-indigo-600 focus:bg-indigo-600 text-indigo-600 hover:text-white focus:hover:text-white py-2 px-3 cursor-pointer"
                     onClick={() => onOpen("invite", { server, isAdmin })}

@@ -5,6 +5,7 @@ import { db } from "@/lib/db"
 import { currentProfile } from "@/lib/current-profile"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Separator } from "@/components/ui/separator"
+import NavigationFooter from "@/components/navigation/navigation-footer"
 import ServerHeader from "@/components/server/server-header"
 import ServerSearch from "@/components/server/server-search"
 import ServerSection from "@/components/server/server-section"
@@ -187,6 +188,7 @@ const ServerSidebar = async ({ serverId }: Props) => {
                     </div>
                 )}
             </ScrollArea>
+            <NavigationFooter profile={profile} />
         </div>
     )
 }

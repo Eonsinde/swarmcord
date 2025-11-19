@@ -1,13 +1,7 @@
 "use client"
-import { useEffect, useMemo, useState } from "react"
-import { useParams, useRouter } from "next/navigation"
-import { useForm } from "react-hook-form"
+import { useCallback, useEffect, useMemo, useState } from "react"
 import { useModal } from "@/hooks/use-modal-store"
-import axios from "axios"
-import * as z from "zod"
-import { zodResolver } from "@hookform/resolvers/zod"
-import qs from "query-string"
-import { ChannelType } from "@prisma/client"
+import { cn } from "@/lib/utils"
 import {
     Dialog,
     DialogContent,
@@ -16,166 +10,104 @@ import {
     DialogHeader,
     DialogTitle
 } from "@/components/ui/dialog"
-import {
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage
-} from "@/components/ui/form"
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-  } from "@/components/ui/select"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
+import { SearchInput } from "@/components/ui/search-input"
+import Profile from "./pages/profile"
+import Rocket from "./pages/rocket"
 
-const formSchema = z.object({
-    name: z.string().min(1, {
-        message: "Channel name is required"
-    }).refine(
-        name => name !== "general",
-        {
-            message: "Channel name cannot be 'general'"
-        }
-    ),
-    type: z.nativeEnum(ChannelType)
-});
+const MENU = [
+    { label: "My Account", value: "account" },
+    { label: "Rocket", value: "rocket" }
+]
 
 const SettingsModal = () => {
-    const router = useRouter();
-    const params = useParams<{ serverId: string }>();
-    const { type, data, isOpen, onClose } = useModal();
+    const { type, isOpen, onClose } = useModal();
 
-    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [activeMenu, setActiveMenu] = useState<string>(() => MENU[0].value);
+    const [menuQuery, setMenuQuery] = useState<string>("");
+
+    // This is the magic: filtered list based on query
+    const filteredMenu = useMemo(() => {
+        if (!menuQuery.trim()) return MENU;
+
+        const query = menuQuery.toLowerCase();
+        return MENU.filter((item) =>
+            item.label.toLowerCase().includes(query)
+        );
+    }, [menuQuery]);
 
     const isModalOpen = useMemo(() => isOpen && type === "userSettings", [isOpen, type]);
 
-    const form = useForm({
-        resolver: zodResolver(formSchema),
-        defaultValues: {
-            name: "",
-            type: ChannelType.TEXT
-        }
-    });
-
-    useEffect(() => {
-        form.setValue("type", data?.channel?.type || ChannelType.TEXT);
-    }, [data]);
-
     const handleClose = () => {
-        form.reset();
         onClose();
+        setTimeout(() => setActiveMenu(MENU[0].value), 10);
+        setMenuQuery("");
     }
 
-    const onSubmit = async (values: z.infer<typeof formSchema>) => {
-        setIsLoading(true);
+    const getModalHeader = useMemo(() => {
+        const found = MENU.filter(item => item.value === activeMenu)
 
-        try {
-            const url = qs.stringifyUrl({
-                url: `/api/channels`,
-                query: {
-                    serverId: params?.serverId
-                }
-            });
+        if (found.length) return found[0]
+        else return null
+    }, [activeMenu])
 
-            await axios.post(url, values);
-
-            form.reset();
-            router.refresh();
-            onClose();
-        } catch {
-            // show error message
-        } finally {
-            setIsLoading(false);
-        }
-    }
+    const renderActiveMenuContent = useCallback(() => {
+        if (activeMenu === "account") return <Profile />
+        else if (activeMenu === "rocket") return <Rocket />
+    }, [activeMenu])
 
     return (
         <Dialog
+            key={String(isModalOpen)}
             open={isModalOpen}
             onOpenChange={handleClose}
         >
-            <DialogContent className="h-full w-full">
-                <DialogHeader>
-                    <DialogTitle>Create channel</DialogTitle>
-                    <DialogDescription>
-                        Channels allow users to share Text, Audio & Video contents
-                    </DialogDescription>
-                </DialogHeader>
-                <Form {...form}>
-                    <form
-                        className="space-y-4"
-                        onSubmit={form.handleSubmit(onSubmit)}
-                    >
-                        <FormField
-                            name="name"
-                            control={form.control}
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel className="text-xs font-bold text-foreground">
-                                        Channel Name
-                                    </FormLabel>
-                                    <FormControl>
-                                        <Input
-                                            {...field}
-                                            disabled={isLoading}
-                                            placeholder="Enter channel name"
-                                        />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
+            <DialogContent className="h-full max-w-full w-full flex flex-row p-0 border-0 rounded-none sm:rounded-none">
+                <div className="w-4/12 bg-[#F2F3F5] dark:bg-[#2B2C31] py-20 px-5 overflow-hidden">
+                    <div className="w-5/12 ml-auto flex flex-col gap-4">
+                        {/* search bar */}
+                        <SearchInput
+                            value={menuQuery}
+                            onChange={(e) => setMenuQuery(e.target.value)}
+                            placeholder="Search"
                         />
-                        <FormField
-                            name="type"
-                            control={form.control}
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel className="text-xs font-bold text-foreground">
-                                        Channel Type
-                                    </FormLabel>
-                                    <Select
-                                        disabled={isLoading}
-                                        onValueChange={field.onChange}
-                                        defaultValue={field.value}
+                        <div className="">
+                            {filteredMenu.length > 0 ? (
+                                filteredMenu.map((item) => (
+                                    <button
+                                        key={item.value} // ← use value, not index!
+                                        className={cn(
+                                            "group p-2 mb-1 flex items-center gap-x-2 w-full hover:bg-zinc-700/5 dark:hover:bg-zinc-700/50 rounded-md transition",
+                                            activeMenu === item.value && "bg-zinc-700/10 dark:bg-zinc-700 hover:bg-zinc-700/10 dark:hover:bg-zinc-700"
+                                        )}
+                                        onClick={() => setActiveMenu(item.value)}
                                     >
-                                        <FormControl>
-                                            <SelectTrigger className="capitalize">
-                                                <SelectValue placeholder="Select channel type" />
-                                            </SelectTrigger>
-                                        </FormControl>
-                                        <SelectContent>
-                                            {Object.values(ChannelType).map((type) => (
-                                                <SelectItem
-                                                    key={type}
-                                                    className="capitalize"
-                                                    value={type}
-                                                >
-                                                    {type.toLowerCase()}
-                                                </SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
-                                    <FormMessage />
-                                </FormItem>
+                                        <p
+                                            className={cn(
+                                                "line-clamp-1 text-sm text-muted-foreground transition",
+                                                activeMenu === item.value && "text-foreground font-semibold"
+                                            )}
+                                        >
+                                            {item.label}
+                                        </p>
+                                    </button>
+                                ))
+                            ) : (
+                                <p className=" px-3 py-2 text-sm text-muted-foreground italic text-wrap">
+                                    No results found for "<span className="text-foreground">{menuQuery}</span>"
+                                </p>
                             )}
-                        />
-                        <DialogFooter>
-                            <Button
-                                variant="primary"
-                                type="submit"
-                                disabled={isLoading}
-                            >
-                                Create
-                            </Button>
-                        </DialogFooter>
-                    </form>
-                </Form>
+                            {/* logout button */}
+                        </div>
+                    </div>
+                </div>
+                <div className="flex-1">
+                    <div className="w-9/12 py-20 px-10">
+                        <DialogHeader>
+                            <DialogTitle>{getModalHeader?.label}</DialogTitle>
+                        </DialogHeader>
+                        {renderActiveMenuContent()}
+                    </div>
+                </div>
             </DialogContent>
         </Dialog>
     )

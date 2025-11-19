@@ -1,8 +1,11 @@
-import { Conversation } from "@prisma/client"
+import { Conversation, Profile } from "@prisma/client"
+import NavigationFooter from "@/components/navigation/navigation-footer"
 import MeItem from "./me-item"
 import FriendsSection from "./friends-section"
 
 type Props = {
+    // receive the profile prop here to send it to navigation footer
+    profile?: Profile
     conversations?: Conversation []
 }
 
@@ -19,7 +22,7 @@ const routes = [
     }
 ];
 
-const MeSidebar = async ({ conversations }: Props) => {
+const MeSidebar = async ({ profile, conversations }: Props) => {
     return (
         <div className="h-full w-full flex flex-col bg-[#F2F3F5] dark:bg-[#2B2C31]">
             <div className="mt-2 px-3">
@@ -33,6 +36,7 @@ const MeSidebar = async ({ conversations }: Props) => {
                 ))}
             </div>
             <FriendsSection friends={conversations} />
+            <NavigationFooter profile={profile} />
         </div>
     );
 }

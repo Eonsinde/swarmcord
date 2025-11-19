@@ -1,7 +1,7 @@
+// TODO:  make this client side and show loader telling user their account is being prepared
 import { redirect } from "next/navigation"
-import { currentProfile } from "@/lib/current-profile"
 import { redirectToSignIn } from "@clerk/nextjs"
-import { getOrCreateProfile } from "@/lib/initial-profile";
+import { getOrCreateProfile } from "@/lib/initial-profile"
 
 const SetupPage = async () => {
     const profile = await getOrCreateProfile();

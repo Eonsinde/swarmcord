@@ -68,10 +68,10 @@ const ServerIdLayout = async ({
                 <meta property="og:description" content={`${server.name} server on swarmcord`} key="description" />
                 <meta property="og:keywords" content={`${server.name}, ${server?.description}, ${server.name} server, ${server.name} server on swarmcord, ${server.name} swarmcord`} key="keywords" />
             </Head>
-            <div className="fixed inset-y-0 z-20 hidden md:flex h-full w-60 flex-col">
+            <div className="fixed inset-y-0 z-20 hidden md:flex h-full w-[300px] flex-col">
                 <ServerSidebar serverId={params.serverId} />
             </div>
-            <main className="h-full md:pl-60">
+            <main className="h-full md:pl-[300px]">
                 {children}
             </main>
         </div>
