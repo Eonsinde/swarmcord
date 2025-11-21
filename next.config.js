@@ -35,6 +35,9 @@ const nextConfig = {
             "files.edgestore.dev",
             "img.clerk.com"
         ]
+    },
+    experimental: {
+        serverActions: true
     }
 }
 
