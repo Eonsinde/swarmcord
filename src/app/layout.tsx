@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import { Open_Sans, Archivo_Black } from "next/font/google"
 import { ClerkProvider } from "@clerk/nextjs"
+import { GlobalProvider } from "@/providers/GlobalProvider"
 import { EdgeStoreProvider } from "@/lib/edgestore"
 import ThemeProvider from "@/providers/ThemeProvider"
 import { ModalProvider } from "@/providers/ModalProvider"
@@ -35,20 +36,22 @@ export default function RootLayout({
           <link rel="icon" href="/favicon.ico" sizes="any" />
         </head>
         <body className={`${font.className} ${archivo_black.variable}`} suppressHydrationWarning>
-          <EdgeStoreProvider>
-            <SocketProvider>
-              <ThemeProvider
-                attribute="class"
-                defaultTheme="dark"
-                enableSystem
-                storageKey="swarmcord"
-              >
-                <ModalProvider />
-                {children}
-                <Toaster />
-              </ThemeProvider>
-            </SocketProvider>
-          </EdgeStoreProvider>
+            <EdgeStoreProvider>
+              <GlobalProvider>
+                <SocketProvider>
+                  <ThemeProvider
+                    attribute="class"
+                    defaultTheme="dark"
+                    enableSystem
+                    storageKey="swarmcord"
+                  >
+                    <ModalProvider />
+                    {children}
+                    <Toaster />
+                  </ThemeProvider>
+                </SocketProvider>
+              </GlobalProvider>
+            </EdgeStoreProvider>
         </body>
       </html>
     </ClerkProvider>
