@@ -10,7 +10,7 @@ type Props = {
 
 const FriendsSection = ({ friends }: Props) => {
     return (
-        <section className="flex flex-col px-3">
+        <section className="flex-1 flex flex-col px-3 overflow-hidden">
             <header className="flex justify-between items-center py-2">
                 <p className="text-sm font-semibold text-muted-foreground">
                     Direct Messages
@@ -28,11 +28,11 @@ const FriendsSection = ({ friends }: Props) => {
                 </ActionTooltip>
             </header>
             <FriendsBlank />
-            <ScrollArea className="flex-1 w-full">
+            {/* <ScrollArea className="flex-1 w-full">
                 
-            </ScrollArea>
+            </ScrollArea> */}
         </section>
-    );
+    )
 }
  
 export default FriendsSection
