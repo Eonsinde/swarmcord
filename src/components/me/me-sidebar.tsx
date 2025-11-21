@@ -23,6 +23,7 @@ const routes = [
 ];
 
 const MeSidebar = async ({ profile, conversations }: Props) => {
+    // TODO: fetch conversation here and render them
     return (
         <div className="h-full w-full flex flex-col bg-[#F2F3F5] dark:bg-[#2B2C31]">
             <div className="mt-2 px-3">
