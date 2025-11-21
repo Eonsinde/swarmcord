@@ -96,14 +96,12 @@ const CreateServerModal = () => {
                 categoryId: activeCategory
             });
 
-            console.log("\n\n\nredirect to:", `/servers/${result.data.id}/${result.data?.channel[0]?.id}`);
+            router.refresh();
+            router.push(`/servers/${result.data.id}/${result.data?.channels[0]?.id}`);
             form.reset();
             onClose();
-
-            router.push(`/servers/${result.data.id}/${result.data?.channel[0]?.id}`);
-        } catch(error) {
+        } catch {
             // show error message
-            // console.error("\n\n\nCreateServerModal::", error);
         } finally {
             setIsLoading(false);
         }
