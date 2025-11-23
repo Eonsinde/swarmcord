@@ -17,9 +17,6 @@ export async function POST(req: Request) {
 
         const serverId = searchParams.get("serverId");
 
-        if (name === "general")
-            return new NextResponse("Channel name cannot be `general`", { status: 400 });
-
         if (!serverId)
             return new NextResponse("serverId required in query params", { status: 400 });
 
