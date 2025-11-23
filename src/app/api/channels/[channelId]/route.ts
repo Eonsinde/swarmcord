@@ -6,12 +6,12 @@ import { currentProfile } from "@/lib/current-profile"
 
 export async function PATCH(req: Request, { params }: { params: { channelId: string } }) {
     try {
+        const profile = await currentProfile();  
+
+        if (!profile)
+            return new NextResponse("Unauthorized", { status: 401 });
+
         const { searchParams } = new URL(req.url);
-        const { name, type } = await req.json();
-
-        if (name === "general")
-            return new NextResponse("You can't edit the general channel", { status: 400 });
-
         const serverId = searchParams.get("serverId");
 
         if (!serverId)
@@ -20,10 +20,11 @@ export async function PATCH(req: Request, { params }: { params: { channelId: str
         if (!params.channelId)
             return new NextResponse("channelId required in params", { status: 400 });
 
-        const profile = await currentProfile();  
+        const { name, type, visibility, default: makeDefault } = await req.json();
 
-        if (!profile)
-            return new NextResponse("Unauthorized", { status: 401 });
+        if (!(name || type || visibility || makeDefault))
+            return new NextResponse("Specify a channel field to be updated", { status: 400 });
+
 
         const server = await db.server.update({
             where: {
@@ -41,14 +42,13 @@ export async function PATCH(req: Request, { params }: { params: { channelId: str
                 channels: {
                     update: {
                         where: {
-                            id: params.channelId,
-                            NOT: {
-                                name: "general"
-                            }
+                            id: params.channelId
                         },
                         data: {
                             name,
-                            type
+                            type,
+                            visibility,
+                            default: makeDefault
                         }
                     }
                 }
