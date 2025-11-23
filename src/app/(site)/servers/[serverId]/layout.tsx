@@ -1,6 +1,5 @@
 import type { Metadata, ResolvingMetadata } from "next"
-import Head from "next/head"
-import { redirect } from "next/navigation"
+import { notFound } from "next/navigation"
 import { redirectToSignIn } from "@clerk/nextjs"
 import { db } from "@/lib/db"
 import { currentProfile } from "@/lib/current-profile"
@@ -16,11 +15,13 @@ export async function generateMetadata(
     parent: ResolvingMetadata
 ): Promise<Metadata> {
     // fetch data using params
-    const server = await db.server.findUnique({
+    const res = await db.server.findUnique({
         where: {
             id: params.serverId
         }
     });
+
+    const server = res || { name: "Server not found", description: "Server not found" };
     
     // optionally access and extend (rather than replace) parent metadata
     const previousImages = (await parent).openGraph?.images || []
@@ -28,7 +29,7 @@ export async function generateMetadata(
     return {
         title: `${server?.name} | Swarmcord`,
         description: server?.description || `${server?.name} server on swarmcord`,
-        keywords: [server?.name || "", server?.description || "", `${server?.name} server`, `${server?.name} server on swarmcord`, `${server?.name} swarmcord`],
+        keywords: [server?.name, server?.description || "", `${server?.name} server`, `${server?.name} server on swarmcord`, `${server?.name} swarmcord`],
         openGraph: {
             images: ['/some-specific-page-image.jpg', ...previousImages],
         },
@@ -49,25 +50,15 @@ const ServerIdLayout = async ({
 
     const server = await db.server.findUnique({
         where: {
-            id: params.serverId,
-            members: {
-                some: {
-                    profileId: profile.id
-                }
-            }
+            id: params.serverId
         }
     });
 
     if (!server)
-        return redirect("/");
+        return notFound();
 
     return (
         <div className="h-full">
-            <Head>
-                <title>{server.name} | Swarmcord</title>
-                <meta property="og:description" content={`${server.name} server on swarmcord`} key="description" />
-                <meta property="og:keywords" content={`${server.name}, ${server?.description}, ${server.name} server, ${server.name} server on swarmcord, ${server.name} swarmcord`} key="keywords" />
-            </Head>
             <div className="fixed inset-y-0 z-20 hidden md:flex h-full w-[300px] flex-col">
                 <ServerSidebar serverId={params.serverId} />
             </div>
