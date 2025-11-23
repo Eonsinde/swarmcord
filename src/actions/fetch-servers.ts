@@ -15,7 +15,7 @@ export const fetchServers = async (category: string) => {
                     members: true,
                     channels: {
                         where: {
-                            name: "general"
+                            default: true
                         },
                         orderBy: {
                             createdAt: "asc"
@@ -26,6 +26,7 @@ export const fetchServers = async (category: string) => {
             return allServers;
         }
 
+        // in the presence of a category, get all related servers
         const existingCategory = await db.category.findFirst({
             where: {
                 name: category
@@ -36,7 +37,7 @@ export const fetchServers = async (category: string) => {
                         members: true,
                         channels: {
                             where: {
-                                name: "general"
+                                default: true
                             },
                             orderBy: {
                                 createdAt: "asc"
