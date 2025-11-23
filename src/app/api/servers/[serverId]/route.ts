@@ -3,7 +3,9 @@ import { NextResponse } from "next/server"
 import { db } from "@/lib/db"
 import { edgeStoreBackendClient } from "@/lib/edgestore-server"
 import { currentProfile } from "@/lib/current-profile"
+import { MemberRole, ServerType } from "@prisma/client";
 
+// route to update a server's fields by the id
 export async function PATCH(req: Request, { params }: { params: { serverId: string } }) {
     try {
         const profile = await currentProfile();
@@ -11,20 +13,31 @@ export async function PATCH(req: Request, { params }: { params: { serverId: stri
         if (!profile)
             return new NextResponse("Unauthorized", { status: 401 });
 
-        const { name, imageUrl, coverUrl } = await req.json();
+        const { name, type, imageUrl, coverUrl } = await req.json();
 
-        if (!(name || imageUrl || coverUrl)) {
+        if (!(name || type || imageUrl || coverUrl)) {
             return new NextResponse("Specify a server field to be update", { status: 400 });
         }
 
-        const existingServer =  await db.server.findUnique({
+        const existingServer = await db.server.findFirst({
             where: {
-                id: params.serverId
+                id: params.serverId,
+                members: {
+                    some: {
+                        profileId: profile.id,                          // ← Must be a member
+                        role: { in: [MemberRole.ADMIN, MemberRole.MODERATOR] } // ← AND admin/mod
+                    }
+                }
             }
         });
 
         if (!existingServer)
             return new NextResponse("Server not found", { status: 404 });
+
+        // if the server type is changing and the change is to an OPEN server
+        if (type !== existingServer.type && type === ServerType.OPEN) {
+            // TODO: get all requested access data, and admit the profiles into the server
+        }
 
         if (imageUrl && existingServer?.imageUrl) {
             // delete the existing server image before replacing with new one
@@ -51,6 +64,7 @@ export async function PATCH(req: Request, { params }: { params: { serverId: stri
             },
             data: {
                 name: name || existingServer.name,
+                type: type || existingServer.type,
                 imageUrl: imageUrl || existingServer.imageUrl,
                 coverUrl: isSubscribed ? coverUrl : existingServer.coverUrl
             }
