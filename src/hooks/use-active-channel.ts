@@ -19,7 +19,8 @@ type Actions = {
 const reducer = (state: State, payload: Payload) => {
     const servers = state.servers;
 
-    if (servers.length === 0) // if no servers exist yet
+    // if no servers exist yet
+    if (servers.length === 0)
         return {
             servers: [{
                 activeServerId: payload.serverId,
@@ -34,7 +35,7 @@ const reducer = (state: State, payload: Payload) => {
             servers: servers.map((server) => server.activeServerId === payload.serverId ? { ...server, activeChannelId: payload.channelId } : server)
         }
 
-    // append new detail if it wasn't existing before
+    // If there are servers and the payload serverId hasn't being added, append new details
     return {
         servers: [
             ...servers,
