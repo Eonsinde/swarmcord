@@ -63,30 +63,39 @@ export async function GET(req: Request) {
 
 export async function POST(req: Request) {
     try {
-        const { name, imageUrl, categoryId } = await req.json();
         const profile = await currentProfile();
 
         if (!profile)
             return new NextResponse("Unauthorized", { status: 401 });
 
-        if (!name)
-            return new NextResponse("Server name is missing", { status: 400 });
+        const { name, type, imageUrl, categoryId } = await req.json();
 
-        const defaultCategory = await db.category.findFirst({
-            where: {
-                name: "local community"
-            }
-        });
+        if (!(name || type || categoryId))
+            return new NextResponse("Missing field is required", { status: 400 });
 
-        if (!defaultCategory)
-            return new NextResponse("Default Category not found", { status: 400 });
+        let categoryIdToUse = categoryId;
+
+        // incase the category Id isn't specified, get the default one and use
+        if (!categoryId) {
+            const defaultCategory = await db.category.findFirst({
+                where: {
+                    name: "local community"
+                }
+            });
+
+            if (!defaultCategory)
+                return new NextResponse("Default Category not found", { status: 400 });
+
+            // update the category Id to use
+            categoryIdToUse = defaultCategory.id;
+        }
 
         const server = await db.server.create({
             data: {
                 creatorId: profile.id,
                 name,
                 imageUrl: imageUrl || null,
-                categoryId: categoryId || defaultCategory.id,
+                categoryId: categoryIdToUse,
                 inviteCode: uuidv4(),
                 channels: {
                     create: [
