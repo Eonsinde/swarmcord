@@ -31,7 +31,7 @@ import {
     SelectItem,
     SelectTrigger,
     SelectValue,
-  } from "@/components/ui/select"
+} from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Button } from "@/components/ui/button"
@@ -75,7 +75,6 @@ const CreateChannelModal = () => {
         
         // say you change the channelType to audio and visibility is currently PUBLIC, set it to PROTECTED
         if (channelType !== ChannelType.TEXT as string && visibility === ChannelVisibility.PUBLIC as string) {
-            console.log("\n\n\nCreateChannel::Setting to protected");
             form.setValue("visibility", ChannelVisibility.PROTECTED, { shouldDirty: true });
             hasChanged = true;
         }
