@@ -25,37 +25,46 @@ export async function PATCH(req: Request, { params }: { params: { channelId: str
         if (!(name || type || visibility || makeDefault))
             return new NextResponse("Specify a channel field to be updated", { status: 400 });
 
-
-        const server = await db.server.update({
+        // Verify the user is admin/mod in the server
+        const server = await db.server.findUnique({
             where: {
                 id: serverId,
                 members: {
                     some: {
                         profileId: profile.id,
-                        role: {
-                            in: [MemberRole.ADMIN, MemberRole.MODERATOR]
-                        }
-                    }
-                }
-            },
-            data: {
-                channels: {
-                    update: {
-                        where: {
-                            id: params.channelId
-                        },
-                        data: {
-                            name,
-                            type,
-                            visibility,
-                            default: makeDefault
-                        }
+                        role: { in: [MemberRole.ADMIN, MemberRole.MODERATOR] }
                     }
                 }
             }
         });
+        
+        if (!server)
+            return new NextResponse("Unauthorized: Not an admin/mod in this server", { status: 403 });
 
-        return NextResponse.json(server);
+        if (makeDefault) {
+            // Remove default flag from any current default channel
+            await db.channel.updateMany({
+                where: {
+                    serverId,
+                    default: true
+                },
+                data: {
+                    default: false
+                }
+            });
+        }
+
+        const channel = await db.channel.update({
+            where: { id: params.channelId },
+            data: {
+                name,
+                type,
+                visibility,
+                default: Boolean(makeDefault)
+            }
+        });
+
+        return NextResponse.json(channel);
     } catch (error) {
         console.log("[CHANNEL_ID_PATCH]", error);
         return new NextResponse("Server Error", { status: 500 });
