@@ -94,15 +94,24 @@ export async function DELETE(req: Request, { params }: { params: { channelId: st
                 channels: {
                     delete: {
                         id: params.channelId,
-                        name: {
-                            not: "general"
+                        default: {
+                            not: true
                         }
+                    }
+                }
+            },
+            include: {
+                channels: {
+                    where: {
+                        default: true
                     }
                 }
             }
         });
 
-        return NextResponse.json(server);
+        console.log("[CHANNEL_ID_DELETE]::defaultChannel::", server.channels[0]);
+
+        return NextResponse.json({ defaultChannel: server.channels[0] });
     } catch (error) {
         console.log("[CHANNEL_ID_DELETE]", error);
         return new NextResponse("Server Error", { status: 500 });
