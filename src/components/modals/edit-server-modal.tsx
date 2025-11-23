@@ -6,6 +6,7 @@ import { useModal } from "@/hooks/use-modal-store"
 import axios from "axios"
 import * as z from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { ServerType } from "@prisma/client"
 import {
     Dialog,
     DialogContent,
@@ -22,6 +23,13 @@ import {
     FormLabel,
     FormMessage
 } from "@/components/ui/form"
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import FileUpload from "@/components/file-upload"
@@ -30,9 +38,8 @@ const formSchema = z.object({
     name: z.string().min(2, {
         message: "Server name is required"
     }),
-    imageUrl: z.string().min(2, {
-        message: "Server image is required"
-    })
+    type: z.nativeEnum(ServerType),
+    imageUrl: z.string()
 });
 
 const EditServerModal = () => {
@@ -46,14 +53,16 @@ const EditServerModal = () => {
     const form = useForm({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            name: "",
-            imageUrl: ""
+            name: data?.server?.name || "",
+            type: data?.server?.type || ServerType.OPEN,
+            imageUrl: data?.server?.imageUrl || ""
         }
     });
 
     useEffect(() => {
         if (data?.server) {
             form.setValue("name", data?.server?.name);
+            form.setValue("type", data?.server?.type);
             form.setValue("imageUrl", data?.server?.imageUrl);
         }
     }, [data, form]);
@@ -126,6 +135,40 @@ const EditServerModal = () => {
                                             placeholder="Enter server name"
                                         />
                                     </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            name="type"
+                            control={form.control}
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel className="text-xs font-bold text-foreground">
+                                        Server Type
+                                    </FormLabel>
+                                    <Select
+                                        disabled={isLoading}
+                                        value={field.value}
+                                        onValueChange={field.onChange}
+                                    >
+                                        <FormControl>
+                                            <SelectTrigger className="capitalize">
+                                                <SelectValue placeholder="Select channel type" />
+                                            </SelectTrigger>
+                                        </FormControl>
+                                        <SelectContent>
+                                            {Object.values(ServerType).map((ct) => (
+                                                <SelectItem
+                                                    key={ct}
+                                                    className="capitalize"
+                                                    value={ct}
+                                                >
+                                                    {ct.toLowerCase()}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
                                     <FormMessage />
                                 </FormItem>
                             )}

@@ -4,11 +4,11 @@ import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
 import { useModal } from "@/hooks/use-modal-store"
 import { CSSTransition } from "react-transition-group"
-import { Category } from "@prisma/client"
 import { ChevronRight } from "lucide-react"
 import axios from "axios"
 import * as z from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { Category, ServerType } from "@prisma/client"
 import {
     Dialog,
     DialogContent,
@@ -20,10 +20,18 @@ import {
 import {
     Form,
     FormControl,
+    FormDescription,
     FormField,
     FormItem,
     FormLabel
 } from "@/components/ui/form"
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import FileUpload from "@/components/file-upload"
@@ -35,6 +43,7 @@ const formSchema = z.object({
     name: z.string().min(2, {
         message: "Server name is required"
     }),
+    type: z.nativeEnum(ServerType),
     imageUrl: z.string()
 });
 
@@ -51,21 +60,25 @@ const CreateServerModal = () => {
 
     const isModalOpen = useMemo(() => isOpen && type === "createServer", [isOpen, type]);
 
+    // TODO: add support for server type field.
+    // think about this: the CLOSED option should only be available to subscribed users
     const form = useForm({
         resolver: zodResolver(formSchema),
         defaultValues: {
             name: "",
+            type: ServerType.OPEN,
             imageUrl: ""
         }
     });
 
     useEffect(() => {
+        // find a better way to fetch and cache the categories
         if (isModalOpen) {
             (async () => {
                 setCategoriesLoading(true);
     
                 try {
-                    const response = await axios.get("/api/categories")
+                    const response = await axios.get("/api/categories");
                     setCategories(response.data);
                 } catch {
                     // show error message
@@ -248,6 +261,43 @@ const CreateServerModal = () => {
                                                         placeholder="Enter server name"
                                                     />
                                                 </FormControl>
+                                            </FormItem>
+                                        )}
+                                    />
+                                    <FormField
+                                        name="type"
+                                        control={form.control}
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel className="text-xs font-bold text-foreground">
+                                                    Server Type
+                                                </FormLabel>
+                                                <Select
+                                                    disabled={isLoading}
+                                                    value={field.value}
+                                                    onValueChange={field.onChange}
+                                                >
+                                                    <FormControl>
+                                                        <SelectTrigger className="capitalize">
+                                                            <SelectValue placeholder="Select channel type" />
+                                                        </SelectTrigger>
+                                                    </FormControl>
+                                                    <SelectContent>
+                                                        {Object.values(ServerType).map((ct) => (
+                                                            <SelectItem
+                                                                key={ct}
+                                                                className="capitalize"
+                                                                value={ct}
+                                                            >
+                                                                {ct.toLowerCase()}
+                                                            </SelectItem>
+                                                        ))}
+                                                    </SelectContent>
+                                                </Select>
+                                                <FormDescription className="text-xs">
+                                                    Open makes your server admissible via invitation code/link. Closed requires{" "}
+                                                    administrators approves a user's request before they join your server
+                                                </FormDescription>
                                             </FormItem>
                                         )}
                                     />
