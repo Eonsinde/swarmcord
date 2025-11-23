@@ -106,10 +106,18 @@ enum ChannelType {
   VIDEO
 }
 
+enum ChannelVisibility {
+  PUBLIC // for everyone
+  PRIVATE // for admins & moderators
+  PROTECTED // for members
+}
+
 model Channel {
   id String @id @default(auto()) @map("_id") @db.ObjectId
   name String
   type ChannelType @default(TEXT)
+  default Boolean @default(false)
+  visibility ChannelVisibility @default(PROTECTED)
 
   creatorId String @db.ObjectId
   creator Profile @relation(fields: [creatorId], references: [id], onDelete: Cascade)
