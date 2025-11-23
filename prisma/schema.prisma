@@ -29,6 +29,7 @@ model Profile {
   stripeCurrentPeriodEnd DateTime? @map(name: "strie_current_period_end")
 
   servers Server[]
+  requestedServerAcess ServerAccess[]
   members Member[]
   channels Channel[]
   directMessages DirectMessage[]
@@ -50,9 +51,15 @@ model Category {
   updatedAt DateTime @updatedAt
 }
 
+enum ServerType {
+  OPEN
+  CLOSED
+}
+
 model Server {
   id String @id @default(auto()) @map("_id") @db.ObjectId
   name String
+  type ServerType @default(OPEN)
   description String?
   imageUrl String? @db.String
   coverUrl String? @db.String
@@ -66,11 +73,31 @@ model Server {
 
   members Member[]
   channels Channel[]
+  requestedAccess ServerAccess[]
 
   createdAt DateTime @default(now())  
   updatedAt DateTime @updatedAt
 
   @@index([creatorId])
+  @@index([categoryId])
+}
+
+model ServerAccess {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  serverId String @db.ObjectId
+  server Server @relation(fields: [serverId], references: [id], onDelete: Cascade)
+
+  profileId String @db.ObjectId
+  profile Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())  
+  updatedAt DateTime @updatedAt
+
+  @@index([profileId])
+  @@index([serverId])
+
+  @@unique([serverId, profileId])
 }
 
 enum MemberRole {
