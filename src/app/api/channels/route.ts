@@ -20,19 +20,6 @@ export async function POST(req: Request) {
         if (!serverId)
             return new NextResponse("serverId required in query params", { status: 400 });
 
-        if (makeDefault) {
-            // Remove default flag from any current default channel
-            await db.channel.updateMany({
-                where: {
-                    serverId,
-                    default: true
-                },
-                data: {
-                    default: false
-                }
-            });
-        }
-
         // Verify the user is admin/mod in the server
         const server = await db.server.findUnique({
             where: {
@@ -46,8 +33,20 @@ export async function POST(req: Request) {
             }
         });
         
-        if (!server) {
+        if (!server)
             return new NextResponse("Unauthorized: Not an admin/mod in this server", { status: 403 });
+
+        if (makeDefault) {
+            // Remove default flag from any current default channel
+            await db.channel.updateMany({
+                where: {
+                    serverId,
+                    default: true
+                },
+                data: {
+                    default: false
+                }
+            });
         }
         
         // Now create channel + connect to server
