@@ -33,11 +33,13 @@ const DeleteChannelModal = () => {
                 }
             });
 
-            await axios.delete(url);
+            // TODO: return the server whose channel was deleted, including the default channel
+            const res = await axios.delete(url);
 
             onClose();
             router.refresh();
-            router.push(`/servers/${data?.server?.id}`);
+            // TODO: use the response to redirect to the default server
+            router.push(`/servers/${data?.server?.id}/${res.data.defaultChannel.id}`);
         } catch (error) {
             
         } finally {
