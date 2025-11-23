@@ -58,7 +58,7 @@ const ChatInput = ({
                     render={({ field }) => (
                         <FormItem>
                             <FormControl>
-                                <div className="m-4 mb-6 py-2 px-3 bg-zinc-200/90 dark:bg-zinc-700/75 flex items-center rounded-sm">
+                                <div className="m-4 mb-6 p-3 bg-zinc-200/90 dark:bg-zinc-700/75 flex items-end rounded-sm">
                                     <button
                                         className="h-[24px] w-[24px] bg-zinc-500 dark:bg-zinc-500 hover:bg-zinc-600 dark:hover:bg-zinc-300 flex justify-center items-center p-1 rounded-full transition"
                                         type="button"
@@ -67,7 +67,7 @@ const ChatInput = ({
                                         <Plus className="text-white dark:text-[#313338]" />
                                     </button>
                                     <Textarea
-                                        className="flex-1 bg-transparent border-none border-0 focus-visible:ring-0 focus-visible:ring-offset-0 text-zinc-600 dark:text-zinc-200 resize-none"
+                                        className="flex-1 py-0 pb-0.5 bg-transparent border-none border-0 focus-visible:ring-0 focus-visible:ring-offset-0 text-zinc-600 dark:text-zinc-200 resize-none"
                                         rows={1}
                                         maxRows={4}
                                         disabled={form.formState.isLoading}
